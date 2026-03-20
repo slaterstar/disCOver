@@ -13,12 +13,23 @@ typedef struct __attribute__((packed)) {
     uint32_t op_b;
 } OverInstr;
 
-typedef struct __attribute__((packed)) {
+typedef struct {
     uint8_t opcode;
     uint32_t op_a;
     uint32_t op_b;
     bool is_binary;
 } DecodedInstr;
 
+typedef struct {
+    uint8_t opcode;
+    uint32_t op_a;
+    uint32_t op_b;
+    bool is_binary;
+} MapInstr;
 
-#endif STRUCTS_H
+typedef struct{
+    int opcode;
+    char* format;
+} OutputPair;
+
+#endif

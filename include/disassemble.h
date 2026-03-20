@@ -2,4 +2,4 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-DecodedInstr* create_instruction(uint8_t header, uint32_t op_a, uint32_t op_b);
+void create_instruction(DecodedInstr* out, uint8_t header, uint32_t op_a, uint32_t op_b);
