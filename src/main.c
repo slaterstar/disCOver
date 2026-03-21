@@ -1,6 +1,17 @@
 #include "../include/main.h"
 // To make logic easier, will use format strings for each operation.
 OutputPair unary[] = { {0, "not [#%Xx]"}, {1, "sys [#%Xx]"} };
+OutputPair binary[] = {
+    {0, "mov [#%Xx] #%Xx"}, {1, "mov [#%Xx] #%Xx"}, {2, "mov [#%Xx] [[#%Xx]]"},
+    {3, "mov [[#%Xx]] #%Xx"}, {4, "mov [[#%Xx]] [#%Xx]"}, {5, "mov [[#%Xx]] [[#%Xx]]"},
+    {6, "and [#%Xx] #%Xx"}, {7, "and [#%Xx] [#%Xx]"},
+    {8, "or [#%Xx] #%Xx"}, {9, "or [#%Xx] [#%Xx]"},
+    {10, "add [#%Xx] #%Xx"}, {11, "add [#%Xx] [#%Xx]"},
+    {12, "sub [#%Xx] #%Xx"}, {13, "sub [#%Xx] [#%Xx]"},
+    {14, "mul [#%Xx] #%Xx"}, {15, "mul [#%Xx] [#%Xx]"},
+    {16, "jz [#%Xx] #%Xx"}, {17, "jz [#%Xx] [#%Xx]"},
+    {18, "jnz [#%Xx] #%Xx"}, {19, "jnz [#%Xx] [#%Xx]"},
+};
 // LSB format
 // 0000010 00000000 00000000 00000000 00000000
 int main(int argc, char* argv[]){
@@ -58,7 +69,13 @@ int main(int argc, char* argv[]){
         }
 
         // Create a mapped output of instruction to human readable.
-        printf(unary[instruction.opcode].format, instruction.op_a);
+        if(instruction.is_binary == 1){
+            printf(binary[instruction.opcode].format, instruction.op_a, instruction.op_b);
+        }
+        else{
+            printf(unary[instruction.opcode].format, instruction.op_a);
+        }
+
     }
     return 0;
 }
