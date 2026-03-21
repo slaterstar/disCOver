@@ -5,7 +5,7 @@ SRC_DIR:=src
 
 default:
 	@mkdir -p bin
-	$(CC) $(CFLAGS) $(SRC_DIR)/main.c $(SRC_DIR)/disassemble.c -o ./bin/disCOver
+	$(CC) $(CFLAGS) $(SRC_DIR)/main.c $(SRC_DIR)/disassemble.c -o ./bin/discover
 
 clean:
 	rm -f ./bin/*
