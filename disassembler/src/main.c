@@ -33,10 +33,10 @@ int main(int argc, char* argv[]){
 
     FILE* out_file = stdout;
 
+    // Decoding loop for instructions.
     uint8_t header_byte;
     int read_cnt = 0;
     while(fread(&header_byte, 1, 1, in_file)){
-
         // Parse each instruction, getting a Decoded result.
         OverInstr* header = (OverInstr*) &header_byte;
         DecodedInstr instruction;
@@ -64,7 +64,6 @@ int main(int argc, char* argv[]){
             }
             create_instruction(&instruction, header_byte, op_a, op_b);
         }
-
         // Create a mapped output of instruction to human readable.
         if(instruction.is_binary == 1){
             printf(binary[instruction.opcode].format, instruction.op_a, instruction.op_b);
@@ -72,7 +71,6 @@ int main(int argc, char* argv[]){
         else{
             printf(unary[instruction.opcode].format, instruction.op_a);
         }
-
     }
     return 0;
 }
