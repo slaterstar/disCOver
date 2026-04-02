@@ -50,7 +50,7 @@ int main(int argc, char* argv[]){
             create_instruction(&instruction, header_byte, op_a, 0);
         }
         else{
-            printf("Binary");
+            // printf("Binary");
             uint32_t op_a;
             uint32_t op_b;
 
