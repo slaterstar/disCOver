@@ -1,1 +1,1 @@
-#include "../include/structs.h"
+#include "../../disassembler/include/structs.h"
