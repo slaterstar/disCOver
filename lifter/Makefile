@@ -5,7 +5,7 @@ SRC_DIR:=src
 
 default:
 	@mkdir -p bin
-	$(CC) $(CFLAGS) $(SRC_DIR)/main.c $(SRC_DIR)/disassemble.c -o ./bin/lifter
+	$(CC) $(CFLAGS) $(SRC_DIR)/main.c -o ./bin/lifter
 
 clean:
 	rm -f ./bin/*
