@@ -1,4 +1,6 @@
 #include "../include/main.h"
+#include <stdio.h>
+
 // To make logic easier, will use format strings for each operation.
 OutputPair unary[] = { {0, "not [#%Xx]"}, {1, "sys [#%Xx]"} };
 OutputPair binary[] = {
@@ -31,12 +33,9 @@ int main(int argc, char* argv[]){
 
     FILE* out_file = stdout;
 
-
     uint8_t header_byte;
     int read_cnt = 0;
     while(fread(&header_byte, 1, 1, in_file)){
-
-
 
         // Parse each instruction, getting a Decoded result.
         OverInstr* header = (OverInstr*) &header_byte;
@@ -48,7 +47,6 @@ int main(int argc, char* argv[]){
             if(read_cnt != 1){
                 break;
             }
-
             create_instruction(&instruction, header_byte, op_a, 0);
         }
         else{
@@ -64,7 +62,6 @@ int main(int argc, char* argv[]){
             if(read_cnt != 1){
                 break;
             }
-
             create_instruction(&instruction, header_byte, op_a, op_b);
         }
 
