@@ -1,0 +1,1 @@
+#define HELP_MESSAGE "Usage: lifter <file>\n"
