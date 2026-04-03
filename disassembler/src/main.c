@@ -71,6 +71,7 @@ int main(int argc, char* argv[]){
         else{
             printf(unary[instruction.opcode].format, instruction.op_a);
         }
+        printf("\n");
     }
     return 0;
 }
