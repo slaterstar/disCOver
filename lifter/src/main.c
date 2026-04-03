@@ -2,7 +2,10 @@
 #include "../../disassembler/include/disassemble.h"
 #include <stdio.h>
 #include <stdint.h>
+#include "../include/lift.h"
+#include "../include/ir.h"
 
+IRContext* ctx;
 
 int main(int argc, char *argv[]){
     char* infile_name = NULL;
@@ -25,6 +28,9 @@ int main(int argc, char *argv[]){
     // Decoding loop for instructions.
     uint8_t header_byte;
     int read_cnt = 0;
+    // Initialize IR context.
+    ctx = malloc(sizeof(IRContext));
+    create_ir_context(ctx);
     while(fread(&header_byte, 1, 1, in_file)){
         // Parse each instruction, getting a Decoded result.
         OverInstr* header = (OverInstr*) &header_byte;
