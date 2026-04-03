@@ -4,8 +4,8 @@ CFLAGS = -g # Flag for implicit rules. Turn on debug info
 SRC_DIR:=src
 
 default:
-	@mkdir -p bin
+	-@MKDIR "./bin" 2>NUL || true
 	$(CC) $(CFLAGS) $(SRC_DIR)/main.c $(SRC_DIR)/disassemble.c -o ./bin/discover
 
 clean:
-	rm -f ./bin/*
+	rmdir /s /q "./bin"
