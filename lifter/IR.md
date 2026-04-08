@@ -24,7 +24,11 @@ HOWEVER, the first operand MUST be a register, and the second operand (if applic
 | NOT | Returns the bitwise NOT of a value. | t1 = NOT(t0)
 | XOR | Returns the eXclusive OR of two values. | t2 = XOR(t1, t0)
 | ASR | Returns the Arithmetic Shift Right of the first operand by the second operand in number of bits. | t2 = ASR(t1, 3)
-| LSL | Returns the Logical Shift Left of the the first operand by the second operand in number of bits | t2 = LSL(t1, 3)
-| LSR | Returns the Logical Shift Right of the first operand by the second operand in number of bits | t2 = LSR(t1, 3)
+| LSL | Returns the Logical Shift Left of the the first operand by the second operand in number of bits. | t2 = LSL(t1, 3)
+| LSR | Returns the Logical Shift Right of the first operand by the second operand in number of bits. | t2 = LSR(t1, 3)
 
+# MISC
+| Operations | Description | Example |
+| ---------- | ----------- | ------- |
+| ASSIGN | Returns the immediate value. | t0 = ASSIGN(0x100)
 
