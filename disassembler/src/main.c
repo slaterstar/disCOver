@@ -4,7 +4,7 @@
 // To make logic easier, will use format strings for each operation.
 OutputPair unary[] = { {0, "not [#%Xx]"}, {1, "sys [#%Xx]"} };
 OutputPair binary[] = {
-    {0, "mov [#%Xx] #%Xx"}, {1, "mov [#%Xx] #%Xx"}, {2, "mov [#%Xx] [[#%Xx]]"},
+    {0, "mov [#%Xx] #%Xx"}, {1, "mov [#%Xx] [#%Xx]"}, {2, "mov [#%Xx] [[#%Xx]]"},
     {3, "mov [[#%Xx]] #%Xx"}, {4, "mov [[#%Xx]] [#%Xx]"}, {5, "mov [[#%Xx]] [[#%Xx]]"},
     {6, "and [#%Xx] #%Xx"}, {7, "and [#%Xx] [#%Xx]"},
     {8, "or [#%Xx] #%Xx"}, {9, "or [#%Xx] [#%Xx]"},
