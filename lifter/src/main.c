@@ -7,6 +7,22 @@
 
 IRContext* ctx;
 
+const LifterOutput output_unary[] = {
+    {0, &lift_not}, {1, &lift_syscall}
+};
+
+const LifterOutput output_binary[] = {
+    {0, &lift_mov10}, {1, &lift_mov11}, {2, &lift_mov12},
+    {3, &lift_mov20}, {4, &lift_mov21}, {5, &lift_mov22},
+    {6, &lift_and10}, {7, &lift_and11},
+    {8, &lift_or10}, {9, &lift_or11},
+    {10, &lift_add10}, {11, &lift_add11},
+    {12, &lift_sub10}, {13, &lift_sub11},
+    {14, &lift_mul10}, {15, &lift_mul11},
+    {16, &lift_jumpz10}, {17, &lift_jumpz11},
+    {18, &lift_jumpnz10}, {19, &lift_jumpnz11},
+};
+
 int main(int argc, char *argv[]){
     char* infile_name = NULL;
 
@@ -62,10 +78,10 @@ int main(int argc, char *argv[]){
         // Create lifter functions, which take a populated instruction and returns a human readable string.
         // A pair which has a function pointer
         if(instruction.is_binary == 1){
-            // printf(binary[instruction.opcode].format, instruction.op_a, instruction.op_b);
+            output_binary[instruction.opcode].funcptr(instruction);
         }
         else{
-            // printf(unary[instruction.opcode].format, instruction.op_a);
+            output_unary[instruction.opcode].funcptr(instruction);
         }
     }
     return 0;

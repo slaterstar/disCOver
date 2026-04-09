@@ -1,11 +1,11 @@
 #include "../../disassembler/include/structs.h"
 
-void mov10(DecodedInstr instr);
-void mov11(DecodedInstr instr);
-void mov12(DecodedInstr instr);
-void mov20(DecodedInstr instr);
-void mov21(DecodedInstr instr);
-void mov22(DecodedInstr instr);
+void lift_mov10(DecodedInstr instr);
+void lift_mov11(DecodedInstr instr);
+void lift_mov12(DecodedInstr instr);
+void lift_mov20(DecodedInstr instr);
+void lift_mov21(DecodedInstr instr);
+void lift_mov22(DecodedInstr instr);
 
 void lift_and10(DecodedInstr instr);
 void lift_and11(DecodedInstr instr);
@@ -30,4 +30,6 @@ void lift_jumpz11(DecodedInstr instr);
 void lift_jumpnz10(DecodedInstr instr);
 void lift_jumpnz11(DecodedInstr instr);
 
+void lift_not(DecodedInstr instr);
+void lift_syscall(DecodedInstr instr);
 
