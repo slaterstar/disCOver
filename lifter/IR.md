@@ -7,8 +7,8 @@ Memory access instructions will be the only ones to reference memory addresses (
 Memory operations can take Immediates or Registers in any operand.
 | Operations | Description | Example |
 | ---------- | ----------- | ------- |
-| LOAD | Returns the value stored in the provided memory address, or a memory address contained in the provided register. | t0 = LOAD(0x100)
-| STORE | Writes the second value (register) into the first operand (a memory address or register containing one) | STORE(0x104, t0)
+| LOAD | Returns the value stored in the memory address contained in the provided register. | t1 = LOAD(t0)
+| STORE | Writes the second value into the first operand | STORE(0x104, t0)
 
 # ARITHMETIC
 Arithmetic operations can take Registers and Immediates. 

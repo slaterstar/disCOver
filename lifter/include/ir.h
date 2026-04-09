@@ -12,21 +12,36 @@ enum IROpcode {
     OPCODE_HALT,
 };
 
+typedef enum {
+    OP_REGISTER,
+    OP_IMMEDIATE,
+    OP_MEMORY_ADDR
+} OperandType;
+
+typedef struct {
+    OperandType type;
+    union {
+        int reg;
+        int imm;
+        int mem;
+    } value;
+} Operand;
+
 typedef struct {
     enum IROpcode opcode;
     union {
         struct {
             int dest_reg;
-            int src;
+            int src; // Register only
         } load;
         struct {
-            int dest_addr;
-            int src_reg;
+            Operand dest_addr;
+            Operand src_reg;
         } store;
         struct {
             int dest_reg;
             int src1_reg;
-            int src2_reg;
+            Operand src2_reg;
         } alu;
         struct {
             int dest_reg;
