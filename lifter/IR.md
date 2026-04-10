@@ -1,14 +1,14 @@
 General rule of thumb for this basic IR:
 Arithmetic will use a mix of registers and immediates as operands. See [ARITHMETIC](#arithmetic) for more information.
 
-Memory access instructions will be the only ones to reference memory addresses (and may include registers)
+Control Flow will use a mix of registers and Labels. Labels can be alpha-numeric.
 
 # MEMORY
-Memory operations can take Immediates or Registers in any operand.
+Memory operations can only take registers.
 | Operations | Description | Example |
 | ---------- | ----------- | ------- |
 | LOAD | Returns the value stored in the memory address contained in the provided register. | t1 = LOAD(t0)
-| STORE | Writes the second value into the first operand | STORE(0x104, t0)
+| STORE | Writes the second register into the first register's memory address | STORE(t1, t0)
 
 # ARITHMETIC
 Arithmetic operations can take Registers and Immediates. 
@@ -26,6 +26,18 @@ HOWEVER, the first operand MUST be a register, and the second operand (if applic
 | ASR | Returns the Arithmetic Shift Right of the first operand by the second operand in number of bits. | t2 = ASR(t1, 3)
 | LSL | Returns the Logical Shift Left of the the first operand by the second operand in number of bits. | t2 = LSL(t1, 3)
 | LSR | Returns the Logical Shift Right of the first operand by the second operand in number of bits. | t2 = LSR(t1, 3)
+
+# CONTROL FLOW
+| Operations | Description | Example |
+| ---------- | ----------- | ------- |
+| LT | Returns 1 if the first operand is lesser than the second | t2 = LT(t1, t0)
+| LTE | Returns 1 if the first operand is lesser than or equal to the second operand | t2 = LTE(t1, t0)
+| EQ | Returns 1 if both operands have equivalent value else 0 | t2 = EQ(t1, t0)
+| GT | Returns 1 if the first operand is greater than the second operand else 0| t2 = GT(t1, t0)
+| GTE | Returns 1 if the first operand is greater than or equal to the second operand | t2 = GTE(t1, t0)
+| JUMP | Continue execution starting from the specified label. | JUMP(LABEL)
+| BRANCH | If the first operand (register) is 1, jump to the 3rd operand's label else jump to the 2nd operand. | BRANCH(t0, TRUE_LABEL, FALSE_LABEL)
+
 
 # MISC
 | Operations | Description | Example |
