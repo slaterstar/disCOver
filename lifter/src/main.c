@@ -2,8 +2,6 @@
 #include "../../disassembler/include/disassemble.h"
 #include <stdio.h>
 #include <stdint.h>
-#include "../include/lift.h"
-#include "../include/ir.h"
 
 IRContext* ctx;
 DynamicArray* labels;
@@ -48,6 +46,11 @@ int main(int argc, char *argv[]){
     // Initialize IR context.
     ctx = malloc(sizeof(IRContext));
     create_ir_context(ctx);
+
+    // Initialize labels array to allow for second pass
+    labels = malloc(sizeof(DynamicArray));
+    init_dynamic_array(labels, 40, sizeof(LabelPair));
+
     while(fread(&header_byte, 1, 1, in_file)){
         // Parse each instruction, getting a Decoded result.
         OverInstr* header = (OverInstr*) &header_byte;
@@ -85,5 +88,21 @@ int main(int argc, char *argv[]){
             output_unary[instruction.opcode].funcptr(instruction);
         }
     }
+    // Second pass, populate labels and basic blocks.
+    //
+    // Sort labels by address in descending order.
+    qsort(labels->data, labels->size, sizeof(LabelPair), label_cmp);
+
+    // Insert labels
+    for(int i = 0; i < labels->size; i++) {
+        // Parse label and insert into IR
+        LabelPair* label = (LabelPair*) ((LabelPair**)labels->data)[i];
+        IRInstruction instr = { .opcode = OPCODE_LABEL, .label = label->label_index };
+        // Find the basic block that this label belongs to and insert the label before it.
+        int index = bsearch(ctx->basic_blocks->data, ctx->basic_blocks->size, sizeof(IRInstruction), label_cmp);
+        insert_ir_instruction(ctx, index, instr);
+    }
+
+    free_ir_context(ctx);
     return 0;
 }
