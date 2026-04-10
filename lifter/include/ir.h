@@ -47,12 +47,21 @@ typedef struct {
             int dest_reg;
             int const_val;
         } assign;
+        struct {
+            Operand label;
+        } jump;
+        struct {
+            int cond_reg;
+            Operand true_label;
+            Operand false_label;
+        } branch;
     };
 } IRInstruction;
 
 typedef struct {
     DynamicArray* instructions;
     int reg_count;
+    int label_count;
 } IRContext;
 
 void create_ir_context(IRContext* ctx);
@@ -62,3 +71,4 @@ IRInstruction get_instruction(IRContext* ctx, int index);
 void free_ir_context(IRContext* ctx);
 
 int new_reg(IRContext* ctx);
+int new_label(IRContext* ctx);

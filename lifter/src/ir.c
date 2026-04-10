@@ -22,3 +22,7 @@ int new_reg(IRContext* ctx){
     return ctx->reg_count;
 }
 
+int new_label(IRContext* ctx){
+    ctx->label_count++;
+    return ctx->label_count;
+}
