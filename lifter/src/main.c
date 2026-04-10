@@ -99,8 +99,9 @@ int main(int argc, char *argv[]){
         LabelPair* label = (LabelPair*) ((LabelPair**)labels->data)[i];
         IRInstruction instr = { .opcode = OPCODE_LABEL, .label = label->label_index };
         // Find the basic block that this label belongs to and insert the label before it.
-        int index = bsearch(ctx->basic_blocks->data, ctx->basic_blocks->size, sizeof(IRInstruction), label_cmp);
-        insert_ir_instruction(ctx, index, instr);
+        // Need fix to find the correct index, doesn't actually find the correct element.
+        // void* index = bsearch(ctx->basic_blocks->data, ctx->basic_blocks->data, ctx->basic_blocks->size, sizeof(IRInstruction), block_cmp);
+        // insert_ir_instruction(ctx, index, instr);
     }
 
     free_ir_context(ctx);
