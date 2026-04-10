@@ -4,7 +4,7 @@
 
 
 extern IRContext* ctx;
-
+extern DynamicArray* labels;
 /*
  * t0 = ASSIGN(0xAA)
  * STORE(0x100, t0)
@@ -25,7 +25,6 @@ void lift_mov10(DecodedInstr instr){
     add_instruction(ctx, ir_instr);
 
     ir_instr.opcode = OPCODE_STORE;
-
     Operand dest_addr;
     dest_addr.type = OP_MEMORY_ADDR;
     dest_addr.value.mem = op_a;
@@ -50,7 +49,7 @@ void lift_mov11(DecodedInstr instr){
     int vreg0 = new_reg(ctx);
 
     IRInstruction ir_instr;
-    ir_instr.opcode = OPCODE_LOAD;
+    ir_instr.opcode = OPCODE_ASSIGN;
     ir_instr.assign.dest_reg = vreg0;
     ir_instr.assign.const_val = op_b;
     add_instruction(ctx, ir_instr);
@@ -232,36 +231,118 @@ void lift_mov22(DecodedInstr instr){
     add_instruction(ctx, ir_instr);
 }
 
+/*
+ * t0 = ASSIGN(0x100)
+ * t1 = ASSIGN(0x200)
+ * t2 = LOAD(t0)
+ * t3 = AND(t1, t2)
+ * STORE(t0, t3)
+ */
 void lift_and10(DecodedInstr instr){
 
 }
+
+/*
+ * t0 = ASSIGN(0x100)
+ * t1 = ASSIGN(0x200)
+ * t2 = LOAD(t0)
+ * t3 = LOAD(t1)
+ * t4 = AND(t2, t3)
+ * STORE(t0, t4)
+ */
 void lift_and11(DecodedInstr instr){
 
 }
+
+/*
+ * t0 = ASSIGN(0x100)
+ * t1 = ASSIGN(0x200)
+ * t2 = LOAD(t0)
+ * t3 = OR(t1, t2)
+ * STORE(t0, t3)
+ */
 void lift_or10(DecodedInstr instr){
 
 }
+
+/*
+ * t0 = ASSIGN(0x100)
+ * t1 = ASSIGN(0x200)
+ * t2 = LOAD(t0)
+ * t3 = LOAD(t1)
+ * t4 = OR(t2, t3)
+ * STORE(t0, t4)
+ */
 void lift_or11(DecodedInstr instr){
 
 }
-// void lift_xor(DecodedInstr instr);
-// void lift_not(DecodedInstr instr);
 
+
+/*
+ * t0 = ASSIGN(0x100)
+ * t1 = ASSIGN(0x200)
+ * t2 = LOAD(t0)
+ * t3 = ADD(t1, t2)
+ * STORE(t0, t3)
+ */
 void lift_add10(DecodedInstr instr){
 
 }
+
+/*
+ * t0 = ASSIGN(0x100)
+ * t1 = ASSIGN(0x200)
+ * t2 = LOAD(t0)
+ * t3 = LOAD(t1)
+ * t4 = ADD(t2, t3)
+ * STORE(t0, t4)
+ */
 void lift_add11(DecodedInstr instr){
 
 }
+
+/*
+ * t0 = ASSIGN(0x100)
+ * t1 = ASSIGN(0x200)
+ * t2 = LOAD(t0)
+ * t3 = SUB(t1, t2)
+ * STORE(t0, t3)
+ */
 void lift_sub10(DecodedInstr instr){
 
 }
+
+/*
+ * t0 = ASSIGN(0x100)
+ * t1 = ASSIGN(0x200)
+ * t2 = LOAD(t0)
+ * t3 = LOAD(t1)
+ * t4 = SUB(t2, t3)
+ * STORE(t0, t4)
+ */
 void lift_sub11(DecodedInstr instr){
 
 }
+
+/*
+ * t0 = ASSIGN(0x100)
+ * t1 = ASSIGN(0x200)
+ * t2 = LOAD(t0)
+ * t3 = MUL(t1, t2)
+ * STORE(t0, t3)
+ */
 void lift_mul10(DecodedInstr instr){
 
 }
+
+/*
+ * t0 = ASSIGN(0x100)
+ * t1 = ASSIGN(0x200)
+ * t2 = LOAD(t0)
+ * t3 = LOAD(t1)
+ * t4 = MUL(t2, t3)
+ * STORE(t0, t4)
+ */
 void lift_mul11(DecodedInstr instr){
 
 }
@@ -270,7 +351,16 @@ void lift_mul11(DecodedInstr instr){
 
 
 // void lift_jump(DecodedInstr instr);
+/*
+ * t0 = ASSIGN(op_a)
+ * BRANCH(t0, op_b, %0 ) // Create TRUE_Label at op_b, FALSE_Label at the instruction after this
+ */
 void lift_jumpz10(DecodedInstr instr){
+    // Ways to add labels:
+    // Create
+    int true_label = new_label(ctx);
+
+    int false_label = new_label(ctx);
 
 }
 void lift_jumpz11(DecodedInstr instr){
@@ -280,5 +370,13 @@ void lift_jumpnz10(DecodedInstr instr){
 
 }
 void lift_jumpnz11(DecodedInstr instr){
+
+}
+
+void lift_not(DecodedInstr instr){
+
+}
+
+void lift_syscall(DecodedInstr instr){
 
 }

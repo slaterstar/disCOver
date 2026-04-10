@@ -6,6 +6,7 @@
 #include "../include/ir.h"
 
 IRContext* ctx;
+DynamicArray* labels;
 
 const LifterOutput output_unary[] = {
     {0, &lift_not}, {1, &lift_syscall}
