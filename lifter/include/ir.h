@@ -9,6 +9,9 @@ enum IROpcode {
     OPCODE_LOAD,
     OPCODE_STORE,
     OPCODE_ASSIGN,
+    OPCODE_LABEL,
+    OPCODE_JUMP,
+    OPCODE_BRANCH,
     OPCODE_HALT,
 };
 
@@ -55,19 +58,30 @@ typedef struct {
             Operand true_label;
             Operand false_label;
         } branch;
+        struct {
+            int label;
+        } label;
     };
 } IRInstruction;
 
 typedef struct {
     DynamicArray* instructions;
+    DynamicArray* basic_blocks;
     int reg_count;
     int label_count;
 } IRContext;
+
+typedef struct {
+    size_t start; // Index of first instruction in basic block.
+    size_t end; // Index of last instruction in basic block.
+    size_t address; // Address of original instruction.
+} BasicBlock;
 
 void create_ir_context(IRContext* ctx);
 void add_instruction(IRContext* ctx, IRInstruction instr);
 void print_ir(IRContext* ctx);
 IRInstruction get_instruction(IRContext* ctx, int index);
+void* insert_ir_instruction(IRContext* ctx, int index, IRInstruction instr);
 void free_ir_context(IRContext* ctx);
 
 int new_reg(IRContext* ctx);
