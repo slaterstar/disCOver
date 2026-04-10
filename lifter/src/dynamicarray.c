@@ -29,3 +29,17 @@ void* get(DynamicArray* arr, size_t index){
     }
     return (void*) (arr->data)[index * arr->data_size];
 }
+void* insert(DynamicArray* arr, size_t index, void* data) {
+    if (index > arr->size) {
+        return NULL;
+    }
+    if (arr->size == arr->capacity) {
+        resize_dynamic_array(arr);
+    }
+    for (size_t i = arr->size; i > index; i--) {
+        arr->data[i * arr->data_size] = arr->data[(i - 1) * arr->data_size];
+    }
+    arr->data[index * arr->data_size] = data;
+    arr->size++;
+    return data;
+}

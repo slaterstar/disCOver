@@ -13,3 +13,4 @@ void push_back(DynamicArray* arr, void* data);
 void free_dynamic_array(DynamicArray* arr);
 
 void* get(DynamicArray* arr, size_t index);
+void* insert(DynamicArray* arr, size_t index, void* data);
