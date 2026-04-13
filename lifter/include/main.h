@@ -23,7 +23,7 @@ int label_cmp(const void* a, const void* b){
 
 int block_cmp(const void* a, const void* b){
     // Ascending order
-    const BasicBlock* la = (const BasicBlock*)a;
-    const BasicBlock* lb = (const BasicBlock*)b;
-    return la->address - lb->address;
+    const IRInstruction* la = (const IRInstruction*)a;
+    const IRInstruction* lb = (const IRInstruction*)b;
+    return la->label.label - lb->label.label;
 }

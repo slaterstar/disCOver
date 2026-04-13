@@ -1,7 +1,7 @@
 #include <stdlib.h>
-
+#include <string.h>
 typedef struct DynamicArray {
-    void** data;
+    void* data;
     size_t size; // Number of elements currently stored
     size_t capacity; // Number of elements currently allocated
     size_t data_size;

@@ -96,12 +96,12 @@ int main(int argc, char *argv[]){
     // Insert labels
     for(int i = 0; i < labels->size; i++) {
         // Parse label and insert into IR
-        LabelPair* label = (LabelPair*) ((LabelPair**)labels->data)[i];
-        IRInstruction instr = { .opcode = OPCODE_LABEL, .label = label->label_index };
+        LabelPair label = ((LabelPair*)labels->data)[i];
+        IRInstruction instr = { .opcode = OPCODE_LABEL, .label = {.label =label.label_index } };
         // Find the basic block that this label belongs to and insert the label before it.
         // Need fix to find the correct index, doesn't actually find the correct element.
-        // void* index = bsearch(ctx->basic_blocks->data, ctx->basic_blocks->data, ctx->basic_blocks->size, sizeof(IRInstruction), block_cmp);
-        // insert_ir_instruction(ctx, index, instr);
+        int index = (int) ((char*)bsearch(ctx->basic_blocks->data, ctx->basic_blocks->data, ctx->basic_blocks->size, sizeof(IRInstruction), block_cmp) - (char*)ctx->basic_blocks->data);
+        insert_ir_instruction(ctx, index, instr);
     }
 
     free_ir_context(ctx);
