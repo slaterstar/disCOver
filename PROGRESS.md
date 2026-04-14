@@ -6,7 +6,18 @@ LIFTER - IN PROGRESS
 # Challenges
 
 ## Disassembler
+After making a basic disassembler (linear scan), I now realize an issue with actual assembled binaries.
+Desynchronization is a problem that makes the disassembler basically unusable.
 
+As there is no conventions in Overscore (yet atleast) this means that I need to employ heuristics and some form of 'emulation'
+to follow blocks of code. 
+
+A couple strategies being contemplated:
+- Follow jumps and branches
+- Misalignment check (invalid opcodes)
+- Backtracking
+
+As the logic for a disassembler is linked to what instructions the lifter works on, this issue must be solved before lifting can be done.
 
 ## Lifter
 Designing an IR for the lifter was a challenge to reason out. Overall the initial ideas I had was to form a complete set. Which is to say include all the fundamental operations, namely: arithmetic, memory access, and control flow.
