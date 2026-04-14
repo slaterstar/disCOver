@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 // To make logic easier, will use format strings for each operation.
-OutputPair unary[] = { {0, "not [#%Xx]"}, {1, "sys [#%Xx]"} };
-OutputPair binary[] = {
+const OutputPair unary[] = { {0, "not [#%Xx]"}, {1, "sys [#%Xx]"} };
+const OutputPair binary[] = {
     {0, "mov [#%Xx] #%Xx"}, {1, "mov [#%Xx] [#%Xx]"}, {2, "mov [#%Xx] [[#%Xx]]"},
     {3, "mov [[#%Xx]] #%Xx"}, {4, "mov [[#%Xx]] [#%Xx]"}, {5, "mov [[#%Xx]] [[#%Xx]]"},
     {6, "and [#%Xx] #%Xx"}, {7, "and [#%Xx] [#%Xx]"},
@@ -37,10 +37,14 @@ int main(int argc, char* argv[]){
     uint8_t header_byte;
     int read_cnt = 0;
     while(fread(&header_byte, 1, 1, in_file)){
+        if(read_cnt == 0 && header_byte == 0xFF){
+            // Stop execution
+            printf("Silent exit. 0xFF");
+            break;
+        }
         // Parse each instruction, getting a Decoded result.
-        OverInstr* header = (OverInstr*) &header_byte;
         DecodedInstr instruction;
-        if(header->size == 0){
+        if((header_byte & 0x80) == 0){
             // printf("Unary");
             uint32_t op_a;
             read_cnt = fread(&op_a, sizeof(uint32_t), 1, in_file);
