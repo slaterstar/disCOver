@@ -1,0 +1,2 @@
+label Main:
+    not [#100x]

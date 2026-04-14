@@ -1,0 +1,2 @@
+label Main:
+    mov [[#10x]] [#20x]
