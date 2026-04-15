@@ -1,2 +1,3 @@
+word Main
 label Main:
     sys [#100x]

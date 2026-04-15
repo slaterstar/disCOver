@@ -1,2 +1,3 @@
+word Main
 label Main:
     not [#100x]

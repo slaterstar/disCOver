@@ -1,3 +1,4 @@
+word Main
 label Main:
     mov [#20x] #0x
     mov [#30x] #0x

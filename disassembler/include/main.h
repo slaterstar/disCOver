@@ -2,3 +2,4 @@
 #include "../include/disassemble.h"
 
 #define HELP_MESSAGE "usage: discover [options] file\n"
+#define WORD_SIZE 4

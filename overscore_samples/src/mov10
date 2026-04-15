@@ -1,2 +1,3 @@
+word Main
 label Main:
     mov [#20x] #0x
