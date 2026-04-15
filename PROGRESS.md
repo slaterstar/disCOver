@@ -36,8 +36,9 @@ Lookup table is used for lifting, each overscore instruction variant has its own
 - Implement labels
 # TODO
 - Disassembler needs to be able to be smart, differentiate data from code.
+  - ~~Follows entry point for parsing~~
 - Refactor Lifter (really needs it...)
-    - Either use defines or functions to do each IR instruction
+  - Either use defines or functions to do each IR instruction
 
 # Resources
 https://www.cs.cmu.edu/afs/cs/Web/People/fp/courses/15411-f13/lectures/20-decompilation.pdf
