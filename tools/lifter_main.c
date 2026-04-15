@@ -1,5 +1,5 @@
-#include "../../include/lifter/main.h"
-#include "../../include/disassembler/disassemble.h"
+#include "../include/lifter/lifter_main.h"
+#include "../include/disassembler/disassemble.h"
 #include <stdio.h>
 #include <stdint.h>
 

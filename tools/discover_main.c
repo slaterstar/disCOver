@@ -1,5 +1,5 @@
-#include "../../include/disassembler/main.h"
-#include "../../include/datastructures/dynamicarray.h"
+#include "../include/disassembler/discover_main.h"
+#include "../include/datastructures/dynamicarray.h"
 #include <stdio.h>
 
 // To make logic easier, will use format strings for each operation.
