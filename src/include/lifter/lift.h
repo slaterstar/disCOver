@@ -1,4 +1,4 @@
-#include "../../disassembler/include/structs.h"
+#include "../disassembler/structs.h"
 
 void lift_mov10(DecodedInstr instr);
 void lift_mov11(DecodedInstr instr);

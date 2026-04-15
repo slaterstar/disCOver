@@ -1,5 +1,5 @@
-#include "../include/lift.h"
-#include "../include/ir.h"
+#include "../../include/lifter/lift.h"
+#include "../../include/lifter/ir.h"
 #include <stdint.h>
 
 
@@ -11,7 +11,7 @@ extern DynamicArray* labels;
  */
 
 void lift_mov10(DecodedInstr instr){
-    uint8_t opcode = instr.opcode;
+    // uint8_t opcode = instr.opcode;
     uint32_t op_a = instr.op_a;
     uint32_t op_b = instr.op_b;
 
@@ -42,7 +42,7 @@ void lift_mov10(DecodedInstr instr){
  * STORE(0xAA, t1)
  */
 void lift_mov11(DecodedInstr instr){
-    uint8_t opcode = instr.opcode;
+    // uint8_t opcode = instr.opcode;
     uint32_t op_a = instr.op_a;
     uint32_t op_b = instr.op_b;
 
@@ -72,7 +72,7 @@ void lift_mov11(DecodedInstr instr){
  * STORE(0xAA, t2)
  */
 void lift_mov12(DecodedInstr instr){
-    uint8_t opcode = instr.opcode;
+    // uint8_t opcode = instr.opcode;
     uint32_t op_a = instr.op_a;
     uint32_t op_b = instr.op_b;
 
@@ -107,7 +107,7 @@ void lift_mov12(DecodedInstr instr){
  * STORE(t2, t0)
  */
 void lift_mov20(DecodedInstr instr){
-    uint8_t opcode = instr.opcode;
+    // uint8_t opcode = instr.opcode;
     uint32_t op_a = instr.op_a;
     uint32_t op_b = instr.op_b;
 
@@ -145,7 +145,7 @@ void lift_mov20(DecodedInstr instr){
  * STORE(t3, t1)
  */
 void lift_mov21(DecodedInstr instr){
-    uint8_t opcode = instr.opcode;
+    // uint8_t opcode = instr.opcode;
     uint32_t op_a = instr.op_a;
     uint32_t op_b = instr.op_b;
 
@@ -190,7 +190,7 @@ void lift_mov21(DecodedInstr instr){
  * STORE(t4, t2)
  */
 void lift_mov22(DecodedInstr instr){
-    uint8_t opcode = instr.opcode;
+    // uint8_t opcode = instr.opcode;
     uint32_t op_a = instr.op_a;
     uint32_t op_b = instr.op_b;
 

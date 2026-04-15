@@ -1,4 +1,4 @@
-#include "../include/ir.h"
+#include "../../include/lifter/ir.h"
 
 void create_ir_context(IRContext* ctx) {
     init_dynamic_array(ctx->instructions, 40, sizeof(IRInstruction));

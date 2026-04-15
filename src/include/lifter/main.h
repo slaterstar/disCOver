@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include "ir.h"
 #include "lift.h"
-#include "../../disassembler/include/structs.h"
+#include "../disassembler/structs.h"
 
 typedef struct {
     uint8_t op_code;

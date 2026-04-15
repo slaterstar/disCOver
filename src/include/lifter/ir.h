@@ -1,4 +1,4 @@
-#include "../include/dynamicarray.h"
+#include "../datastructures/dynamicarray.h"
 #include <stdint.h>
 
 enum IROpcode {
