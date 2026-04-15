@@ -1,3 +1,6 @@
+#ifndef DYNAMICARRAY_H
+#define DYNAMICARRAY_H
+
 #include <stdlib.h>
 #include <string.h>
 typedef struct DynamicArray {
@@ -15,3 +18,5 @@ void free_dynamic_array(DynamicArray* arr);
 
 void* get(DynamicArray* arr, size_t index);
 void* insert(DynamicArray* arr, size_t index, void* data);
+
+#endif // DYNAMICARRAY_H
