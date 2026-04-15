@@ -33,3 +33,4 @@ void lift_jumpnz11(DecodedInstr instr);
 void lift_not(DecodedInstr instr);
 void lift_syscall(DecodedInstr instr);
 
+void lift_end(DecodedInstr instr);
