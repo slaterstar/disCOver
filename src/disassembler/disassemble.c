@@ -36,7 +36,7 @@ int disassemble(FILE* in_file, DynamicArray* instructions) {
 
     int read_cnt = 1;
     while(fread(&header_byte, 1, 1, in_file)){
-        if(read_cnt == 0 && header_byte == 0xFF){
+        if(read_cnt == 0 && header_byte == END){
             // Stop execution
             printf("Silent exit. 0xFF");
             break;
@@ -50,9 +50,9 @@ int disassemble(FILE* in_file, DynamicArray* instructions) {
         // instruction = variable
         // Parse each instruction, getting a Decoded result.
         DecodedInstr instruction;
-        if (header_byte == 0xFF) {
+        if (header_byte == END) {
             // End marker, not necessarily instruction but is important for program.
-            instruction = (DecodedInstr){ .opcode = 0xFF, .op_a = 0, .op_b = 0, .is_binary = false };
+            instruction = (DecodedInstr){ .opcode = END, .op_a = 0, .op_b = 0, .is_binary = false };
         }
         else if(size == 0 && opcode < 2){
             // printf("Unary");

@@ -1,7 +1,7 @@
 
 #ifndef DISASSEMBLE_H
 #define DISASSEMBLE_H
-
+#define END 0xFF
 #include "structs.h"
 #include "../datastructures/dynamicarray.h"
 #include <stdio.h>
