@@ -1,9 +1,10 @@
 #include "../../include/lifter/ir.h"
 
 void create_ir_context(IRContext* ctx) {
-    init_dynamic_array(ctx->instructions, 40, sizeof(IRInstruction));
+    ctx->instructions = malloc(sizeof(DynamicArray));
+    init_dynamic_array(ctx->instructions, 80, sizeof(IRInstruction));
     ctx->reg_count = -1;
-    init_dynamic_array(ctx->basic_blocks, 40, sizeof(BasicBlock));
+    // init_dynamic_array(ctx->basic_blocks, 40, sizeof(BasicBlock));
 }
 
 void add_instruction(IRContext* ctx, IRInstruction instr) {
@@ -16,7 +17,7 @@ IRInstruction get_instruction(IRContext* ctx, int index) {
 
 void free_ir_context(IRContext* ctx) {
     free_dynamic_array(ctx->instructions);
-    free_dynamic_array(ctx->basic_blocks);
+    // free_dynamic_array(ctx->basic_blocks);
 }
 
 void* insert_ir_instruction(IRContext* ctx, int index, IRInstruction instr) {

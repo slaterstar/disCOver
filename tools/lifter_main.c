@@ -66,24 +66,33 @@ int main(int argc, char *argv[]){
             output_unary[instr.opcode].funcptr(instr);
         }
     }
-
-
+    // Print IR instructions
+    for(int i = 0; i < ctx->instructions->size; i++) {
+        IRInstruction instr = ((IRInstruction*)ctx->instructions->data)[i];
+        if(instr.mem_addr != -1){
+            printf("0x%08X: ", instr.mem_addr);
+        }
+        else{
+            printf("            ");
+        }
+        printf("%d\n", instr.opcode);
+    }
 
     // Second pass, populate labels and basic blocks.
     //
     // Sort labels by address in descending order.
-    qsort(labels->data, labels->size, sizeof(LabelPair), label_cmp);
+    // qsort(labels->data, labels->size, sizeof(LabelPair), label_cmp);
 
-    // Insert labels
-    for(int i = 0; i < labels->size; i++) {
-        // Parse label and insert into IR
-        LabelPair label = ((LabelPair*)labels->data)[i];
-        IRInstruction instr = { .opcode = OPCODE_LABEL, .label = {.label =label.label_index } };
-        // Find the basic block that this label belongs to and insert the label before it.
-        // Need fix to find the correct index, doesn't actually find the correct element.
-        int index = (int) ((char*)bsearch(ctx->basic_blocks->data, ctx->basic_blocks->data, ctx->basic_blocks->size, sizeof(IRInstruction), block_cmp) - (char*)ctx->basic_blocks->data);
-        insert_ir_instruction(ctx, index, instr);
-    }
+    // // Insert labels
+    // for(int i = 0; i < labels->size; i++) {
+    //     // Parse label and insert into IR
+    //     LabelPair label = ((LabelPair*)labels->data)[i];
+    //     IRInstruction instr = { .opcode = OPCODE_LABEL, .label = {.label =label.label_index } };
+    //     // Find the basic block that this label belongs to and insert the label before it.
+    //     // Need fix to find the correct index, doesn't actually find the correct element.
+    //     int index = (int) ((char*)bsearch(ctx->basic_blocks->data, ctx->basic_blocks->data, ctx->basic_blocks->size, sizeof(IRInstruction), block_cmp) - (char*)ctx->basic_blocks->data);
+    //     insert_ir_instruction(ctx, index, instr);
+    // }
 
     free_ir_context(ctx);
     return 0;

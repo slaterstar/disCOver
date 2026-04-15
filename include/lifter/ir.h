@@ -62,11 +62,12 @@ typedef struct {
             int label;
         } label;
     };
+    uint32_t mem_addr; // Address of the memory region being lifted; Only the start of a block will have a positive address.
 } IRInstruction;
 
 typedef struct {
     DynamicArray* instructions;
-    DynamicArray* basic_blocks;
+    // DynamicArray* basic_blocks;
     int reg_count;
     int label_count;
 } IRContext;
@@ -74,7 +75,6 @@ typedef struct {
 typedef struct {
     size_t start; // Index of first instruction in basic block.
     size_t end; // Index of last instruction in basic block.
-    size_t address; // Address of original instruction.
 } BasicBlock;
 
 void create_ir_context(IRContext* ctx);

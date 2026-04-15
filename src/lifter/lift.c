@@ -18,12 +18,13 @@ void lift_mov10(DecodedInstr instr){
     int vreg = new_reg(ctx);
 
     IRInstruction ir_instr;
+    ir_instr.mem_addr = instr.mem_addr;
     ir_instr.opcode = OPCODE_ASSIGN;
     ir_instr.assign.dest_reg = vreg;
     ir_instr.assign.const_val = op_b;
 
     add_instruction(ctx, ir_instr);
-
+    ir_instr.mem_addr = -1;
     ir_instr.opcode = OPCODE_STORE;
     Operand dest_addr;
     dest_addr.type = OP_MEMORY_ADDR;
@@ -49,10 +50,12 @@ void lift_mov11(DecodedInstr instr){
     int vreg0 = new_reg(ctx);
 
     IRInstruction ir_instr;
+    ir_instr.mem_addr = instr.mem_addr;
     ir_instr.opcode = OPCODE_ASSIGN;
     ir_instr.assign.dest_reg = vreg0;
     ir_instr.assign.const_val = op_b;
     add_instruction(ctx, ir_instr);
+    ir_instr.mem_addr = -1;
     int vreg1 = new_reg(ctx);
     ir_instr.opcode = OPCODE_LOAD;
     ir_instr.load.dest_reg = vreg1;
@@ -79,10 +82,12 @@ void lift_mov12(DecodedInstr instr){
     int vreg0 = new_reg(ctx);
 
     IRInstruction ir_instr;
+    ir_instr.mem_addr = instr.mem_addr;
     ir_instr.opcode = OPCODE_ASSIGN;
     ir_instr.assign.dest_reg = vreg0;
     ir_instr.assign.const_val = op_b;
     add_instruction(ctx, ir_instr);
+    ir_instr.mem_addr = -1;
     int vreg1 = new_reg(ctx);
     ir_instr.opcode = OPCODE_LOAD;
     ir_instr.load.dest_reg = vreg1;
@@ -114,11 +119,12 @@ void lift_mov20(DecodedInstr instr){
     int vreg0 = new_reg(ctx);
 
     IRInstruction ir_instr;
+    ir_instr.mem_addr = instr.mem_addr;
     ir_instr.opcode = OPCODE_ASSIGN;
     ir_instr.assign.dest_reg = vreg0;
     ir_instr.assign.const_val = op_b;
     add_instruction(ctx, ir_instr);
-
+    ir_instr.mem_addr = -1;
     int vreg1 = new_reg(ctx);
     ir_instr.opcode = OPCODE_ASSIGN;
     ir_instr.assign.dest_reg = vreg1;
@@ -152,10 +158,12 @@ void lift_mov21(DecodedInstr instr){
     int vreg0 = new_reg(ctx);
 
     IRInstruction ir_instr;
+    ir_instr.mem_addr = instr.mem_addr;
     ir_instr.opcode = OPCODE_ASSIGN;
     ir_instr.assign.dest_reg = vreg0;
     ir_instr.assign.const_val = op_b;
     add_instruction(ctx, ir_instr);
+    ir_instr.mem_addr = -1;
 
     int vreg1 = new_reg(ctx);
     ir_instr.opcode = OPCODE_LOAD;
@@ -196,10 +204,12 @@ void lift_mov22(DecodedInstr instr){
 
     int vreg0 = new_reg(ctx);
     IRInstruction ir_instr;
+    ir_instr.mem_addr = instr.mem_addr;
     ir_instr.opcode = OPCODE_ASSIGN;
     ir_instr.assign.dest_reg = vreg0;
     ir_instr.assign.const_val = op_b;
     add_instruction(ctx, ir_instr);
+    ir_instr.mem_addr = -1;
 
     int vreg1 = new_reg(ctx);
     ir_instr.opcode = OPCODE_LOAD;
@@ -385,5 +395,6 @@ void lift_end(DecodedInstr instr){
     IRInstruction end_instr = {
         .opcode = OPCODE_HALT,
     };
+    end_instr.mem_addr = instr.mem_addr;
     add_instruction(ctx, end_instr);
 }
