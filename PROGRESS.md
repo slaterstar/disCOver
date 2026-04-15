@@ -1,6 +1,8 @@
 # Status
 DISASSEMBLER - Barebones
+
 IR - Unstable
+
 LIFTER - IN PROGRESS
 
 # Challenges
