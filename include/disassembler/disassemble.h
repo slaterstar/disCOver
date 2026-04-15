@@ -8,8 +8,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-void create_instruction(DecodedInstr* out, uint8_t header, uint32_t op_a, uint32_t op_b);
+void create_instruction(DecodedInstr* out, uint8_t header, uint32_t op_a, uint32_t op_b, uint32_t mem_addr);
 // Sets the file pointer to the starting address and returns 0 on success, -1 on failure.
-int seek_entry(FILE* in_file);
+int seek_entry(FILE* in_file, unsigned int *address_out);
 int disassemble(FILE* in_file, DynamicArray* instructions);
 #endif // DISASSEMBLE_H

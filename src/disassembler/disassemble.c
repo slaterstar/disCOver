@@ -1,14 +1,16 @@
 #include "../../include/disassembler/disassemble.h"
+#include <stdio.h>
 
-void create_instruction(DecodedInstr* out, uint8_t header, uint32_t op_a, uint32_t op_b){
+void create_instruction(DecodedInstr* out, uint8_t header, uint32_t op_a, uint32_t op_b, uint32_t mem_addr){
 
     out->opcode = header & 0x7F;
     out->op_a = op_a;
     out->is_binary = header & (1 << 7);
 
     out->op_b = (out->is_binary) ? op_b : 0;
+    out->mem_addr = mem_addr;
 }
-int seek_entry(FILE* in_file){
+int seek_entry(FILE* in_file, unsigned int *address_out){
     unsigned int starting_address = -1;
     unsigned int file_size = -1;
     fseek(in_file, 0, SEEK_END);
@@ -22,12 +24,14 @@ int seek_entry(FILE* in_file){
     else{
         fseek(in_file, starting_address, SEEK_SET);
     }
+    *address_out = starting_address;
     return 0;
 }
 // Disassembles the instructions in the file and stores them in the instructions array.
 // Returns 0 on success, 1 on failure.
 int disassemble(FILE* in_file, DynamicArray* instructions) {
-    if(seek_entry(in_file) != 0) {
+    unsigned int curr_address;
+    if(seek_entry(in_file, &curr_address) != 0) {
         return 1;
     }
 
@@ -52,7 +56,7 @@ int disassemble(FILE* in_file, DynamicArray* instructions) {
         DecodedInstr instruction;
         if (header_byte == END) {
             // End marker, not necessarily instruction but is important for program.
-            instruction = (DecodedInstr){ .opcode = END, .op_a = 0, .op_b = 0, .is_binary = false };
+            instruction = (DecodedInstr){ .opcode = END, .op_a = 0, .op_b = 0, .is_binary = false, .mem_addr = ftell(in_file)};
         }
         else if(size == 0 && opcode < 2){
             // printf("Unary");
@@ -61,7 +65,7 @@ int disassemble(FILE* in_file, DynamicArray* instructions) {
             if(read_cnt != 1){
                 break;
             }
-            create_instruction(&instruction, header_byte, op_a, 0);
+            create_instruction(&instruction, header_byte, op_a, 0, ftell(in_file));
         }
         else if(size == 1 && opcode < 20){
             // printf("Binary");
@@ -76,7 +80,7 @@ int disassemble(FILE* in_file, DynamicArray* instructions) {
             if(read_cnt != 1){
                 break;
             }
-            create_instruction(&instruction, header_byte, op_a, op_b);
+            create_instruction(&instruction, header_byte, op_a, op_b, ftell(in_file));
         }
         else{
             // continue to read the next byte.

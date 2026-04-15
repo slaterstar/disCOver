@@ -18,14 +18,9 @@ typedef struct {
     uint32_t op_a;
     uint32_t op_b;
     bool is_binary;
+    uint32_t mem_addr;
 } DecodedInstr;
 
-typedef struct {
-    uint8_t opcode;
-    uint32_t op_a;
-    uint32_t op_b;
-    bool is_binary;
-} MapInstr;
 
 typedef struct{
     int opcode;

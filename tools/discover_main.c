@@ -45,14 +45,17 @@ int main(int argc, char* argv[]){
     for(int i = 0; i < instructions->size; i++) {
         DecodedInstr* instr = (DecodedInstr*)get(instructions, i);
         if(instr->opcode == 0xFF) {
+            fprintf(out_file, "0x%08X: ", instr->mem_addr);
             printf("end\n");
         }
         else if(instr->is_binary) {
+            fprintf(out_file, "0x%08X: ", instr->mem_addr);
             fprintf(out_file, binary[instr->opcode].format, instr->op_a, instr->op_b);
         } else {
+            fprintf(out_file, "0x%08X: ", instr->mem_addr);
             fprintf(out_file, unary[instr->opcode].format, instr->op_a);
         }
-        printf("\n");
+        fprintf(out_file, "\n");
     }
     return 0;
 }
