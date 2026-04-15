@@ -3,3 +3,5 @@ bin
 overscore
 overscore.exe
 make_samples.sh
+compile_commands.json
+build
