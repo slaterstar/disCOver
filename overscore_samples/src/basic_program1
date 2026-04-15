@@ -1,0 +1,12 @@
+word Main
+word #0
+word #0
+word #0
+word #0
+
+label Main:
+    mov [#100x] #AAx
+    mov [#104x] [#100x]
+    not [#104x]
+    and [#100x] [#104x]
+    end
