@@ -37,7 +37,7 @@ HOWEVER, the first operand MUST be a register, and the second operand (if applic
 | GTE | Returns 1 if the first operand is greater than or equal to the second operand | t2 = GTE(t1, t0)
 | JUMP | Continue execution starting from the specified label. | JUMP(LABEL)
 | BRANCH | If the first operand (register) is 1, jump to the 3rd operand's label else jump to the 2nd operand. | BRANCH(t0, TRUE_LABEL, FALSE_LABEL)
-
+| HALT | Returns no value, halts execution of program. | |
 
 # MISC
 | Operations | Description | Example |

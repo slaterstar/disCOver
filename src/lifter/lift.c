@@ -380,3 +380,10 @@ void lift_not(DecodedInstr instr){
 void lift_syscall(DecodedInstr instr){
 
 }
+
+void lift_end(DecodedInstr instr){
+    IRInstruction end_instr = {
+        .opcode = OPCODE_HALT,
+    };
+    add_instruction(ctx, end_instr);
+}
