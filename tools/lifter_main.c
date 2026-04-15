@@ -40,10 +40,7 @@ int main(int argc, char *argv[]){
         printf("Failed to open file: %s\n", infile_name);
         return 1;
     }
-    // Decoding loop for instructions.
-    uint8_t header_byte;
-    int read_cnt = 0;
-    // Initialize IR context.
+
     ctx = malloc(sizeof(IRContext));
     create_ir_context(ctx);
 
@@ -51,43 +48,27 @@ int main(int argc, char *argv[]){
     labels = malloc(sizeof(DynamicArray));
     init_dynamic_array(labels, 40, sizeof(LabelPair));
 
-    while(fread(&header_byte, 1, 1, in_file)){
-        // Parse each instruction, getting a Decoded result.
-        OverInstr* header = (OverInstr*) &header_byte;
-        DecodedInstr instruction;
-        if(header->size == 0){
-            // printf("Unary");
-            uint32_t op_a;
-            read_cnt = fread(&op_a, sizeof(uint32_t), 1, in_file);
-            if(read_cnt != 1){
-                break;
-            }
-            create_instruction(&instruction, header_byte, op_a, 0);
-        }
-        else{
-            // printf("Binary");
-            uint32_t op_a;
-            uint32_t op_b;
+    DynamicArray* instructions = malloc(sizeof(DynamicArray));
+    init_dynamic_array(instructions, 40, sizeof(DecodedInstr));
 
-            read_cnt = fread(&op_a, sizeof(uint32_t), 1, in_file);
-            if(read_cnt != 1){
-                break;
-            }
-            read_cnt = fread(&op_b, sizeof(uint32_t), 1, in_file);
-            if(read_cnt != 1){
-                break;
-            }
-            create_instruction(&instruction, header_byte, op_a, op_b);
+    disassemble(in_file, instructions);
+
+    // Lift all instructions
+    for(int i = 0; i < instructions->size; i++) {
+        DecodedInstr instr = ((DecodedInstr*)instructions->data)[i];
+        if(instr.opcode == END) {
+            lift_end(instr);
         }
-        // Create lifter functions, which take a populated instruction and returns a human readable string.
-        // A pair which has a function pointer
-        if(instruction.is_binary == 1){
-            output_binary[instruction.opcode].funcptr(instruction);
+        else if(instr.is_binary == 1) {
+            output_binary[instr.opcode].funcptr(instr);
         }
-        else{
-            output_unary[instruction.opcode].funcptr(instruction);
+        else {
+            output_unary[instr.opcode].funcptr(instr);
         }
     }
+
+
+
     // Second pass, populate labels and basic blocks.
     //
     // Sort labels by address in descending order.
