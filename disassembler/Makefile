@@ -5,7 +5,7 @@ SRC_DIR:=src
 
 default:
 	-@MKDIR -p "./bin" 2>NUL || true
-	$(CC) $(CFLAGS) $(SRC_DIR)/main.c $(SRC_DIR)/disassemble.c -o ./bin/discover
+	$(CC) $(CFLAGS) $(SRC_DIR)/main.c $(SRC_DIR)/disassemble.c $(SRC_DIR)/dynamicarray.c -o ./bin/discover
 
 clean:
 	rm -rf "./bin"

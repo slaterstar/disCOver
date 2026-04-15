@@ -1,4 +1,5 @@
 #include "../include/main.h"
+#include "../include/dynamicarray.h"
 #include <stdio.h>
 
 // To make logic easier, will use format strings for each operation.
@@ -38,6 +39,9 @@ int main(int argc, char* argv[]){
     file_size = ftell(in_file);
     fseek(in_file, 0, SEEK_SET);
 
+    DynamicArray* instructions = malloc(sizeof(DynamicArray));
+    init_dynamic_array(instructions, sizeof(DecodedInstr), 1024);
+
     // Decoding loop for instructions.
     uint8_t header_byte;
     fread(&starting_address, 4, 1, in_file);
@@ -63,12 +67,12 @@ int main(int argc, char* argv[]){
         // end = 1 byte
         // instruction = variable
         // Parse each instruction, getting a Decoded result.
-        if (header_byte == 0xFF) {
-            printf("END\n");
-            break;
-        }
         DecodedInstr instruction;
-        if(size == 0 && opcode < 2){
+        if (header_byte == 0xFF) {
+            // End marker, not necessarily instruction but is important for program.
+            instruction = (DecodedInstr){ .opcode = 0xFF, .op_a = 0, .op_b = 0, .is_binary = false };
+        }
+        else if(size == 0 && opcode < 2){
             // printf("Unary");
             uint32_t op_a;
             read_cnt = fread(&op_a, sizeof(uint32_t), 1, in_file);
@@ -96,12 +100,19 @@ int main(int argc, char* argv[]){
             // continue to read the next byte.
             continue;
         }
-        // Create a mapped output of instruction to human readable.
-        if(instruction.is_binary == 1){
-            printf(binary[instruction.opcode].format, instruction.op_a, instruction.op_b);
+        push_back(instructions, &instruction);
+    }
+
+
+    for(int i = 0; i < instructions->size; i++) {
+        DecodedInstr* instr = (DecodedInstr*)get(instructions, i);
+        if(instr->opcode == 0xFF) {
+            printf("end\n");
         }
-        else{
-            printf(unary[instruction.opcode].format, instruction.op_a);
+        else if(instr->is_binary) {
+            printf(binary[instr->opcode].format, instr->op_a, instr->op_b);
+        } else {
+            printf(unary[instr->opcode].format, instr->op_a);
         }
         printf("\n");
     }
