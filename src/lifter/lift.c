@@ -285,7 +285,47 @@ void lift_and10(DecodedInstr instr){
  * STORE(t0, t4)
  */
 void lift_and11(DecodedInstr instr){
+    int op_a = instr.op_a;
+    int op_b = instr.op_b;
 
+    IRInstruction ir_instr;
+
+    int vreg0 = new_reg(ctx);
+    ir_instr.opcode = OPCODE_ASSIGN;
+    ir_instr.assign.dest_reg = vreg0;
+    ir_instr.assign.const_val = op_a;
+    ir_instr.mem_addr = instr.mem_addr;
+    add_instruction(ctx, ir_instr);
+    ir_instr.mem_addr = -1;
+
+    int vreg1 = new_reg(ctx);
+    ir_instr.opcode = OPCODE_ASSIGN;
+    ir_instr.assign.dest_reg = vreg1;
+    ir_instr.assign.const_val = op_b;
+    add_instruction(ctx, ir_instr);
+
+    int vreg2 = new_reg(ctx);
+    ir_instr.opcode = OPCODE_LOAD;
+    ir_instr.load.dest_reg = vreg2;
+    ir_instr.load.src = vreg0;
+    add_instruction(ctx, ir_instr);
+
+    int vreg3 = new_reg(ctx);
+    ir_instr.opcode = OPCODE_LOAD;
+    ir_instr.load.dest_reg = vreg3;
+    ir_instr.load.src = vreg1;
+    add_instruction(ctx, ir_instr);
+
+    int vreg4 = new_reg(ctx);
+    ir_instr.opcode = OPCODE_AND;
+    ir_instr.alu.dest_reg = vreg3;
+    ir_instr.alu.src1_reg = vreg2;
+    add_instruction(ctx, ir_instr);
+
+    ir_instr.opcode = OPCODE_STORE;
+    ir_instr.store.dest_addr = (Operand){.type = OP_REGISTER, .value.reg = vreg0};
+    ir_instr.store.src_reg = (Operand){.type = OP_REGISTER, .value.reg = vreg4};
+    add_instruction(ctx, ir_instr);
 }
 
 /*
