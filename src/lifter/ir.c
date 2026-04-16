@@ -29,19 +29,24 @@ int new_reg(IRContext* ctx){
     return ctx->reg_count;
 }
 
-int new_label(IRContext* ctx, uint32_t mem_addr, LabelPair* out_label) {
+int new_label(IRContext* ctx, uint32_t value, LabelType type, LabelPair* out_label) {
     ctx->label_count++;
     out_label->label_index = ctx->label_count;
-    out_label->memory_addr = mem_addr;
+    out_label->type = type;
+    if(type == REG) {
+        out_label->value.reg_index = value;
+    } else {
+        out_label->value.memory_addr = value;
+    }
     return ctx->label_count;
 }
 
-int label_cmp(const void* a, const void* b){
-    // Descending order
-    const LabelPair* la = (const LabelPair*)a;
-    const LabelPair* lb = (const LabelPair*)b;
-    return lb->memory_addr - la->memory_addr;
-}
+// int label_cmp(const void* a, const void* b){
+//     // Descending order
+//     const LabelPair* la = (const LabelPair*)a;
+//     const LabelPair* lb = (const LabelPair*)b;
+//     return lb->memory_addr - la->memory_addr;
+// }
 
 int block_cmp(const void* a, const void* b){
     // Ascending order

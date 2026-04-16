@@ -93,9 +93,18 @@ typedef struct {
     void(*funcptr)(DecodedInstr);
 } LifterOutput;
 
+typedef enum LabelType{
+    MEM,
+    REG,
+} LabelType;
+
 typedef struct {
     int label_index;
-    size_t memory_addr;
+    LabelType type;
+    union{
+        size_t memory_addr;
+        size_t reg_index;
+    } value;
 } LabelPair;
 
 int label_cmp(const void* a, const void* b);
@@ -110,6 +119,6 @@ void* insert_ir_instruction(IRContext* ctx, int index, IRInstruction instr);
 void free_ir_context(IRContext* ctx);
 
 int new_reg(IRContext* ctx);
-int new_label(IRContext* ctx, uint32_t mem_addr, LabelPair* out_label);
+int new_label(IRContext* ctx, uint32_t value, LabelType type, LabelPair* out_label);
 
 #endif // IR_H

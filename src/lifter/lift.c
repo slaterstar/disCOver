@@ -339,7 +339,7 @@ void lift_add11(DecodedInstr instr){
  * t0 = ASSIGN(0x100)
  * t1 = ASSIGN(0x200)
  * t2 = LOAD(t0)
- * t3 = SUB(t1, t2)
+ * t3 = SUB(t2, t1)
  * STORE(t0, t3)
  */
 void lift_sub10(DecodedInstr instr){
@@ -383,7 +383,7 @@ void lift_mul11(DecodedInstr instr){
 // void lift_div(DecodedInstr instr);
 
 
-
+// MODIFY LABEL PAIR TO ACCEPT A REGISTER.
 // void lift_jump(DecodedInstr instr);
 /*
  * t0 = ASSIGN(0x100)
@@ -414,8 +414,8 @@ void lift_jumpz10(DecodedInstr instr){
     };
     add_instruction(ctx, ir_instr);
 
-    new_label(ctx, instr.op_b, &true_label);
-    new_label(ctx, instr.mem_addr + 1, &false_label);
+    new_label(ctx, instr.op_b, MEM, &true_label);
+    new_label(ctx, instr.mem_addr + 1, MEM, &false_label);
 
     ir_instr = (IRInstruction) {
         .opcode = OPCODE_BRANCH,
@@ -479,8 +479,8 @@ void lift_jumpz11(DecodedInstr instr){
     };
     add_instruction(ctx, ir_instr);
 
-    new_label(ctx, instr.op_b, &true_label); // Need register to be put here.
-    new_label(ctx, instr.mem_addr + 1, &false_label);
+    new_label(ctx, vreg3, REG, &true_label); // Need register to be put here.
+    new_label(ctx, instr.mem_addr + 1, MEM, &false_label);
 
     ir_instr = (IRInstruction) {
         .opcode = OPCODE_BRANCH,
@@ -499,7 +499,8 @@ void lift_jumpz11(DecodedInstr instr){
 
 /*
  * t0 = ASSIGN(op_a)
- * BRANCH(t0, %0, op_b ) // Create TRUE_Label at instruction after, FALSE_Label at op_b
+ * t1 = LOAD(t0)
+ * BRANCH(t1, %0, op_b ) // Create TRUE_Label at instruction after, FALSE_Label at op_b
  */
 void lift_jumpnz10(DecodedInstr instr){
     LabelPair true_label;
@@ -523,8 +524,8 @@ void lift_jumpnz10(DecodedInstr instr){
     };
     add_instruction(ctx, ir_instr);
 
-    new_label(ctx, instr.mem_addr + 1, &true_label);
-    new_label(ctx, instr.op_b, &false_label);
+    new_label(ctx, instr.mem_addr + 1, MEM, &true_label);
+    new_label(ctx, instr.op_b, MEM, &false_label);
 
     ir_instr = (IRInstruction) {
         .opcode = OPCODE_BRANCH,
@@ -544,7 +545,9 @@ void lift_jumpnz10(DecodedInstr instr){
 /*
  * t0 = ASSIGN(op_a)
  * t1 = ASSIGN(op_b)
- * BRANCH(t0, %0, t1 ) // Create TRUE_Label at instruction after, FALSE_Label at t1
+ * t2 = LOAD(t0)
+ * t3 = LOAD(t1)
+ * BRANCH(t2, %0, t3 ) // Create TRUE_Label at instruction after, FALSE_Label at t3
  */
 void lift_jumpnz11(DecodedInstr instr){
     LabelPair true_label;
@@ -586,8 +589,8 @@ void lift_jumpnz11(DecodedInstr instr){
     };
     add_instruction(ctx, ir_instr);
 
-    new_label(ctx, instr.mem_addr + 1, &true_label); // Need register to be put here.
-    new_label(ctx, instr.op_b, &false_label);
+    new_label(ctx, instr.mem_addr + 1, MEM, &true_label);
+    new_label(ctx, vreg3, REG, &false_label);
 
     ir_instr = (IRInstruction) {
         .opcode = OPCODE_BRANCH,
