@@ -639,7 +639,6 @@ void lift_jumpnz11(DecodedInstr instr){
             .true_label = true_label.label_index,
             .false_label = false_label.label_index,
         },
-        .mem_addr = -1
     };
     add_instruction(ctx, ir_instr);
 
