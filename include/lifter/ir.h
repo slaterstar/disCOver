@@ -54,7 +54,7 @@ typedef struct {
         struct {
             int dest_reg;
             int src1_reg;
-            Operand src2_reg;
+            int src2_reg;
         } alu;
         struct {
             int dest_reg;

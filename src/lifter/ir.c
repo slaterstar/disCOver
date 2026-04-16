@@ -4,6 +4,7 @@ void create_ir_context(IRContext* ctx) {
     ctx->instructions = malloc(sizeof(DynamicArray));
     init_dynamic_array(ctx->instructions, 80, sizeof(IRInstruction));
     ctx->reg_count = -1;
+    ctx->label_count = -1;
     // init_dynamic_array(ctx->basic_blocks, 40, sizeof(BasicBlock));
 }
 

@@ -29,34 +29,34 @@ void print_ir_instr(IRInstruction *ir_instr, FILE *out_file){
     }
     switch (ir_instr->opcode) {
         case OPCODE_ADD:
-            fprintf(out_file, "add r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg.value.reg);
+            fprintf(out_file, "add r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
             break;
         case OPCODE_SUB:
-            fprintf(out_file, "sub r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg.value.reg);
+            fprintf(out_file, "sub r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
             break;
         case OPCODE_MUL:
-            fprintf(out_file, "mul r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg.value.reg);
+            fprintf(out_file, "mul r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
             break;
         case OPCODE_DIV:
-            fprintf(out_file, "div r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg.value.reg);
+            fprintf(out_file, "div r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
             break;
         case OPCODE_NOT:
             fprintf(out_file, "not r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg);
             break;
         case OPCODE_AND:
-            fprintf(out_file, "and r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg.value.reg);
+            fprintf(out_file, "and r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
             break;
         case OPCODE_OR:
-            fprintf(out_file, "or r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg.value.reg);
+            fprintf(out_file, "or r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
             break;
         case OPCODE_ASR:
-            fprintf(out_file, "asr r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg.value.reg);
+            fprintf(out_file, "asr r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
             break;
         case OPCODE_LSL:
-            fprintf(out_file, "lsl r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg.value.reg);
+            fprintf(out_file, "lsl r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
             break;
         case OPCODE_LSR:
-            fprintf(out_file, "lsr r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg.value.reg);
+            fprintf(out_file, "lsr r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
             break;
         case OPCODE_LOAD:
             fprintf(out_file, "load r%d, [r%d]\n", ir_instr->load.dest_reg, ir_instr->load.src);
