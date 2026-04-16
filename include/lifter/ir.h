@@ -1,11 +1,21 @@
+#ifndef IR_H
+#define IR_H
+
 #include "../datastructures/dynamicarray.h"
 #include <stdint.h>
+#include "../disassembler/structs.h"
 
 enum IROpcode {
     OPCODE_ADD,
     OPCODE_SUB,
     OPCODE_MUL,
     OPCODE_DIV,
+    OPCODE_NOT,
+    OPCODE_AND,
+    OPCODE_OR,
+    OPCODE_ASR,
+    OPCODE_LSL,
+    OPCODE_LSR,
     OPCODE_LOAD,
     OPCODE_STORE,
     OPCODE_ASSIGN,
@@ -55,8 +65,8 @@ typedef struct {
         } jump;
         struct {
             int cond_reg;
-            Operand true_label;
-            Operand false_label;
+            int true_label;
+            int false_label;
         } branch;
         struct {
             int label;
@@ -77,6 +87,21 @@ typedef struct {
     size_t end; // Index of last instruction in basic block.
 } BasicBlock;
 
+
+typedef struct {
+    uint8_t op_code;
+    void(*funcptr)(DecodedInstr);
+} LifterOutput;
+
+typedef struct {
+    int label_index;
+    size_t memory_addr;
+} LabelPair;
+
+int label_cmp(const void* a, const void* b);
+
+int block_cmp(const void* a, const void* b);
+
 void create_ir_context(IRContext* ctx);
 void add_instruction(IRContext* ctx, IRInstruction instr);
 void print_ir(IRContext* ctx);
@@ -85,4 +110,6 @@ void* insert_ir_instruction(IRContext* ctx, int index, IRInstruction instr);
 void free_ir_context(IRContext* ctx);
 
 int new_reg(IRContext* ctx);
-int new_label(IRContext* ctx);
+int new_label(IRContext* ctx, uint32_t mem_addr, LabelPair* out_label);
+
+#endif // IR_H

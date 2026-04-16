@@ -29,7 +29,23 @@ int new_reg(IRContext* ctx){
     return ctx->reg_count;
 }
 
-int new_label(IRContext* ctx){
+int new_label(IRContext* ctx, uint32_t mem_addr, LabelPair* out_label) {
     ctx->label_count++;
+    out_label->label_index = ctx->label_count;
+    out_label->memory_addr = mem_addr;
     return ctx->label_count;
+}
+
+int label_cmp(const void* a, const void* b){
+    // Descending order
+    const LabelPair* la = (const LabelPair*)a;
+    const LabelPair* lb = (const LabelPair*)b;
+    return lb->memory_addr - la->memory_addr;
+}
+
+int block_cmp(const void* a, const void* b){
+    // Ascending order
+    const IRInstruction* la = (const IRInstruction*)a;
+    const IRInstruction* lb = (const IRInstruction*)b;
+    return la->label.label - lb->label.label;
 }

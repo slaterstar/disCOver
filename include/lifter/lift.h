@@ -1,3 +1,6 @@
+#ifndef LIFT_H
+#define LIFT_H
+
 #include "../disassembler/structs.h"
 
 void lift_mov10(DecodedInstr instr);
@@ -34,3 +37,4 @@ void lift_not(DecodedInstr instr);
 void lift_syscall(DecodedInstr instr);
 
 void lift_end(DecodedInstr instr);
+#endif
