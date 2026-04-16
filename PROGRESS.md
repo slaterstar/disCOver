@@ -40,8 +40,12 @@ Lookup table is used for lifting, each overscore instruction variant has its own
 - Disassembler needs to be able to be smart, differentiate data from code.
   - ~~Follows entry point for parsing~~
 - Refactor Lifter (really needs it...)
+  - ~~Refactored to reuse disassembler~~
   - Either use defines or functions to do each IR instruction
+- SSA
+  - Which method? (Phi nodes, coloring algorithm, other? )
 
 # Resources
 https://www.cs.cmu.edu/afs/cs/Web/People/fp/courses/15411-f13/lectures/20-decompilation.pdf
 binrec
+https://compilers.cs.uni-saarland.de/papers/ssara.pdf
