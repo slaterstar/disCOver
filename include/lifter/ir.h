@@ -61,7 +61,7 @@ typedef struct {
             int const_val;
         } assign;
         struct {
-            Operand label;
+            int label;
         } jump;
         struct {
             int cond_reg;
