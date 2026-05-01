@@ -42,12 +42,12 @@ int new_label(IRContext* ctx, uint32_t value, LabelType type, LabelPair* out_lab
     return ctx->label_count;
 }
 
-// int label_cmp(const void* a, const void* b){
-//     // Descending order
-//     const LabelPair* la = (const LabelPair*)a;
-//     const LabelPair* lb = (const LabelPair*)b;
-//     return lb->memory_addr - la->memory_addr;
-// }
+int label_cmp(const void* a, const void* b){
+    // Descending order
+    const LabelPair* la = (const LabelPair*)a;
+    const LabelPair* lb = (const LabelPair*)b;
+    return lb->value.memory_addr - la->value.memory_addr;
+}
 
 int block_cmp(const void* a, const void* b){
     // Ascending order

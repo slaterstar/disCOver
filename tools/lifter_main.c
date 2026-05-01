@@ -21,6 +21,10 @@ const LifterOutput output_binary[] = {
 };
 
 void print_ir_instr(IRInstruction *ir_instr, FILE *out_file){
+    if(ir_instr->opcode == OPCODE_LABEL) {
+        fprintf(out_file, "label %d\n", ir_instr->label.label);
+        return;
+    }
     if(ir_instr->mem_addr != -1){
         fprintf(out_file, "0x%08X: ", ir_instr->mem_addr);
     }
@@ -80,6 +84,7 @@ void print_ir_instr(IRInstruction *ir_instr, FILE *out_file){
             fprintf(out_file, "halt\n");
             break;
         default:
+            fprintf(out_file, "unknown_opcode\n");
             break;
     }
 }
@@ -129,28 +134,69 @@ int main(int argc, char *argv[]){
             output_unary[instr.opcode].funcptr(instr);
         }
     }
+
+    insert_labels_into_ir(ctx, labels);
     // Print IR instructions
     for(int i = 0; i < ctx->instructions->size; i++) {
         IRInstruction instr = ((IRInstruction*)ctx->instructions->data)[i];
         print_ir_instr(&instr, out_file);
     }
 
-    // Second pass, populate labels and basic blocks.
-    //
-    // Sort labels by address in descending order.
-    // qsort(labels->data, labels->size, sizeof(LabelPair), label_cmp);
-
-    // // Insert labels
-    // for(int i = 0; i < labels->size; i++) {
-    //     // Parse label and insert into IR
-    //     LabelPair label = ((LabelPair*)labels->data)[i];
-    //     IRInstruction instr = { .opcode = OPCODE_LABEL, .label = {.label =label.label_index } };
-    //     // Find the basic block that this label belongs to and insert the label before it.
-    //     // Need fix to find the correct index, doesn't actually find the correct element.
-    //     int index = (int) ((char*)bsearch(ctx->basic_blocks->data, ctx->basic_blocks->data, ctx->basic_blocks->size, sizeof(IRInstruction), block_cmp) - (char*)ctx->basic_blocks->data);
-    //     insert_ir_instruction(ctx, index, instr);
-    // }
 
     free_ir_context(ctx);
+    free_dynamic_array(labels);
     return 0;
+}
+
+void insert_labels_into_ir(IRContext* ctx, DynamicArray* labels) {
+    // 1. Sort labels by address DESCENDING (highest address first)
+    // This is the "Backtracking" trick: inserting at the end of the array
+    // doesn't shift the indices of the instructions at the beginning.
+    qsort(labels->data, labels->size, sizeof(LabelPair), label_cmp);
+
+    for(int i = 0; i < labels->size; i++) {
+        LabelPair* lp = &((LabelPair*)labels->data)[i];
+
+        if (lp->type == MEM) {
+            int raw_index = find_instr_index_by_addr(ctx, lp->value.memory_addr);
+
+            if (raw_index != -1) {
+                IRInstruction label_instr = {
+                    .opcode = OPCODE_LABEL,
+                    .label = { .label = lp->label_index },
+                    .mem_addr = lp->value.memory_addr
+                };
+
+                // Because we are sorting DESCENDING, we don't need an 'offset' variable.
+                // We just insert, and the lower-address indices remain stable.
+                insert_ir_instruction(ctx, raw_index, label_instr);
+            }
+        }
+    }
+}
+
+int find_instr_index_by_addr(IRContext* ctx, uint32_t addr) {
+    int best_index = -1;
+    uint32_t best_addr = 0;
+
+    for (int i = 0; i < ctx->instructions->size; i++) {
+        IRInstruction* current = (IRInstruction*)get(ctx->instructions, i);
+
+        // Skip internal IR instructions that don't have a real physical address
+        if (current->mem_addr == (uint32_t)-1) continue;
+
+        // Exact match found
+        if (current->mem_addr == addr) {
+            return i;
+        }
+
+        // Track the closest instruction that started BEFORE the target address
+        if (current->mem_addr < addr && (best_index == -1 || current->mem_addr > best_addr)) {
+            best_index = i;
+            best_addr = current->mem_addr;
+        }
+    }
+
+    // This will return the index of the instruction "containing" the label
+    return best_index;
 }
