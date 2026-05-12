@@ -137,6 +137,52 @@ int main(int argc, char *argv[]){
 
     insert_labels_into_ir(ctx, labels);
     // Print IR instructions
+
+    // Begin on basic block population
+    DynamicArray* basic_blocks = malloc(sizeof(DynamicArray));
+    init_dynamic_array(basic_blocks, 40, sizeof(BasicBlock));
+    size_t start = 0;
+    size_t end = 0;
+    for(int i = 0; i < ctx->instructions->size; i++) {
+        IRInstruction instr = ((IRInstruction*)ctx->instructions->data)[i];
+        if(instr.opcode == OPCODE_LABEL) {
+            // Labels should signify start of a block.
+            end = i - 1;
+            BasicBlock* bb = malloc(sizeof(BasicBlock));
+            bb->start = start;
+            bb->end = end;
+            push_back(basic_blocks, bb);
+            start = i;
+        }
+        else if ( instr.opcode == OPCODE_JUMP || instr.opcode == OPCODE_BRANCH){
+            // We want branches to be the end of a block
+            end = i;
+            BasicBlock* bb = malloc(sizeof(BasicBlock));
+            bb->start = start;
+            bb->end = end;
+            push_back(basic_blocks, bb);
+            start = i+1;
+        }
+        else if (instr.opcode == OPCODE_HALT) {
+            end = i;
+            BasicBlock* bb = malloc(sizeof(BasicBlock));
+            bb->start = start;
+            bb->end = end;
+            push_back(basic_blocks, bb);
+            if( i < ctx->instructions->size - 1) {
+                start = i + 1;
+            }
+        }
+    }
+    for(int i = 0; i < basic_blocks->size; i++) {
+        BasicBlock* bb = get(basic_blocks, i);
+        printf("Basic block %d: start=%zu, end=%zu\n", i, bb->start, bb->end);
+        printf("Instruction at start: ");
+        print_ir_instr(&((IRInstruction*)ctx->instructions->data)[bb->start], out_file);
+        printf("Instruction at end  : ");
+        print_ir_instr(&((IRInstruction*)ctx->instructions->data)[bb->end], out_file);
+    }
+
     for(int i = 0; i < ctx->instructions->size; i++) {
         IRInstruction instr = ((IRInstruction*)ctx->instructions->data)[i];
         print_ir_instr(&instr, out_file);
@@ -149,9 +195,7 @@ int main(int argc, char *argv[]){
 }
 
 void insert_labels_into_ir(IRContext* ctx, DynamicArray* labels) {
-    // 1. Sort labels by address DESCENDING (highest address first)
-    // This is the "Backtracking" trick: inserting at the end of the array
-    // doesn't shift the indices of the instructions at the beginning.
+    // Insert at end so we don't need to shift indices as we iterate.
     qsort(labels->data, labels->size, sizeof(LabelPair), label_cmp);
 
     for(int i = 0; i < labels->size; i++) {
@@ -167,8 +211,6 @@ void insert_labels_into_ir(IRContext* ctx, DynamicArray* labels) {
                     .mem_addr = lp->value.memory_addr
                 };
 
-                // Because we are sorting DESCENDING, we don't need an 'offset' variable.
-                // We just insert, and the lower-address indices remain stable.
                 insert_ir_instruction(ctx, raw_index, label_instr);
             }
         }
