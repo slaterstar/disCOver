@@ -4,7 +4,6 @@
 // make sure its zero initialized
 ast_node_t* ast_table[TABLE_SIZE] = {0};
 
-
 uint32_t hash_node(IROpcode op, ast_node_t* lhs, ast_node_t* rhs, int imm){
     struct {
         uint32_t op;
@@ -27,16 +26,16 @@ uint32_t hash_node(IROpcode op, ast_node_t* lhs, ast_node_t* rhs, int imm){
 }
 
 // Constructor for ast_node
-ast_node_t* make_binop(IROpcode op, ast_node_t* lhs, ast_node_t* rhs){
+ast_node_t* make_binop(IROpcode op, ast_node_t* lhs, ast_node_t* rhs, int imm){
     // hash pointers of children
-    uint32_t hash = hash_node(op, lhs, rhs, 0);
+    uint32_t hash = hash_node(op, lhs, rhs, imm);
     int bucket = hash % TABLE_SIZE;
 
     // Lookup specific operation with specific children
     ast_node_t* node = ast_table[bucket];
     while(node){
         // check for exact match
-        if (node->data.bin.left_child == lhs && node->data.bin.right_child == rhs && node->opcode == op) {
+        if (node->data.bin.left_child == lhs && node->data.bin.right_child == rhs && node->opcode == op && node->data.value == imm) {
             return node;
         }
         // Traverse the bucket for collisions
@@ -49,6 +48,7 @@ ast_node_t* make_binop(IROpcode op, ast_node_t* lhs, ast_node_t* rhs){
     node->hash = hash;
     node->data.bin.left_child = lhs;
     node->data.bin.right_child = rhs;
+    node->data.value = imm;
     // Insert at head of bucket
     node->next = ast_table[bucket];
     ast_table[bucket] = node;
