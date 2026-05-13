@@ -32,6 +32,8 @@ Now for the other qualities, I had to decide whether I wanted it to be pure or f
 All forms of storage are within dynamic arrays. LLVM uses doubly linked lists and will be the next-try if issues arise, particularly when optimization passes will be implemented.
 Lookup table is used for lifting, each overscore instruction variant has its own lift function which will generate its IR.
 
+### Lemerre SSA
+Interesting thing that may occur is being able to refactor itself when the code output changes. Not quite sure about it but I want to try this new technique just to learn.
 
 # In-progress
 - Create IR for all instructions
@@ -49,3 +51,5 @@ Lookup table is used for lifting, each overscore instruction variant has its own
 https://www.cs.cmu.edu/afs/cs/Web/People/fp/courses/15411-f13/lectures/20-decompilation.pdf
 binrec
 https://compilers.cs.uni-saarland.de/papers/ssara.pdf
+https://docs.angr.io/en/latest/analyses/decompiler.html
+https://bernsteinbear.com/assets/img/lemerre-ssa.pdf

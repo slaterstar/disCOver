@@ -187,6 +187,7 @@ int main(int argc, char *argv[]){
         IRInstruction instr = ((IRInstruction*)ctx->instructions->data)[i];
         print_ir_instr(&instr, out_file);
     }
+    // Begin on Lemerre's SSA,
 
 
     free_ir_context(ctx);
