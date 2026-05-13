@@ -1,0 +1,25 @@
+typedef enum  {
+    OPCODE_ADD,
+    OPCODE_SUB,
+    OPCODE_MUL,
+    OPCODE_DIV,
+    OPCODE_NOT,
+    OPCODE_AND,
+    OPCODE_OR,
+    OPCODE_ASR,
+    OPCODE_LSL,
+    OPCODE_LSR,
+    OPCODE_LOAD,
+    OPCODE_STORE,
+    OPCODE_ASSIGN,
+    OPCODE_LABEL,
+    OPCODE_JUMP,
+    OPCODE_BRANCH,
+    OPCODE_HALT,
+} IROpcode;
+
+typedef enum {
+    OP_REGISTER,
+    OP_IMMEDIATE,
+    OP_MEMORY_ADDR
+} OperandType;
