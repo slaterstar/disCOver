@@ -1,3 +1,6 @@
+#ifndef ENUMS_H
+#define ENUMS_H
+
 typedef enum  {
     OPCODE_ADD,
     OPCODE_SUB,
@@ -27,3 +30,5 @@ typedef enum {
     OP_IMMEDIATE,
     OP_MEMORY_ADDR
 } OperandType;
+
+#endif // ENUMS_H
