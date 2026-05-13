@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "../disassembler/structs.h"
 
-enum IROpcode {
+typedef enum  {
     OPCODE_ADD,
     OPCODE_SUB,
     OPCODE_MUL,
@@ -23,7 +23,7 @@ enum IROpcode {
     OPCODE_JUMP,
     OPCODE_BRANCH,
     OPCODE_HALT,
-};
+} IROpcode;
 
 typedef enum {
     OP_REGISTER,
@@ -41,7 +41,7 @@ typedef struct {
 } Operand;
 
 typedef struct {
-    enum IROpcode opcode;
+    IROpcode opcode;
     union {
         struct {
             int dest_reg;
