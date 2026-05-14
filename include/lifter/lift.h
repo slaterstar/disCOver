@@ -2,6 +2,9 @@
 #define LIFT_H
 
 #include "../disassembler/structs.h"
+#include "../../include/lifter/ir.h"
+#include "../../include/lifter/ir_construction.h"
+#include <stdint.h>
 
 void lift_mov10(DecodedInstr instr);
 void lift_mov11(DecodedInstr instr);
