@@ -6,9 +6,15 @@ typedef enum  {
     OPCODE_SUB,
     OPCODE_MUL,
     OPCODE_DIV,
+    OPCODE_LT,
+    OPCODE_LTE,
+    OPCODE_GT,
+    OPCODE_GTE,
+    OPCODE_EQ,
     OPCODE_NOT,
     OPCODE_AND,
     OPCODE_OR,
+    OPCODE_XOR,
     OPCODE_ASR,
     OPCODE_LSL,
     OPCODE_LSR,
@@ -26,11 +32,5 @@ typedef enum  {
     OPCODE_MEMORY_ADDRESS,
 } IROpcode;
 
-typedef enum {
-    OP_REGISTER,
-    OP_IMMEDIATE,
-    OP_MEMORY_ADDR,
-    OP_LABEL,
-} OperandType;
 
 #endif // ENUMS_H
