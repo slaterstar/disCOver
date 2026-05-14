@@ -1,9 +1,8 @@
-#ifndef IR_H
-#define IR_H
+#ifndef AST_H
+#define AST_H
 
 #include <stdint.h>
 #include <stdbool.h>
-#include "../lifter/ir.h"
 #include "../lifter/enums.h"
 #include "hash.h"
 // Hash-Consed AST Node
@@ -23,4 +22,4 @@ typedef struct ast_node {
 
 uint32_t hash_node(IROpcode opcode, ast_node_t* l, ast_node_t* r, int val);
 
-#endif // IR_H
+#endif // AST_H
