@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "enums.h"
 #include "../disassembler/structs.h"
-
+#include "../datastructures/ast.h"
 
 
 typedef struct {
@@ -14,6 +14,7 @@ typedef struct {
         int reg;
         int imm;
         int mem;
+        int label;
     } value;
 } Operand;
 
@@ -63,7 +64,8 @@ typedef struct {
 } IRInstruction;
 
 typedef struct {
-    DynamicArray* instructions;
+    ast_node_t* root;
+    // DynamicArray* instructions;
     // DynamicArray* basic_blocks;
     int reg_count;
     int label_count;
