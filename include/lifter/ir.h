@@ -22,32 +22,42 @@ typedef struct {
     union {
         struct {
             int dest_reg;
-            int src; // Register only
+            int src_reg; // Register only
         } load;
         struct {
-            Operand dest_addr;
-            Operand src_reg;
+            int addr_reg;
+            int data_reg;
         } store;
         struct {
             int dest_reg;
             int src1_reg;
-            int src2_reg;
+            Operand src2;
         } alu;
+        struct{
+            int dest_reg;
+            int src1_reg;
+            Operand src2;
+        } comp;
         struct {
             int dest_reg;
             int const_val;
         } assign;
         struct {
-            int label;
+            Operand label; // intlabel or a register for address
         } jump;
         struct {
             int cond_reg;
-            int true_label;
-            int false_label;
+            Operand true_val; // intlabel or a register for address
+            Operand false_val; // intlabel or a register for address
         } branch;
         struct {
             int label;
         } label;
+        struct {
+            int dest_reg;
+            int *src_regs;
+            int num_srcs;
+        } phi;
     };
     uint32_t mem_addr; // Address of the memory region being lifted; Only the start of a block will have a positive address.
 } IRInstruction;

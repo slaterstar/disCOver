@@ -19,6 +19,7 @@ typedef enum  {
     OPCODE_JUMP,
     OPCODE_BRANCH,
     OPCODE_HALT,
+    OPCODE_PHI,
     // AST Leaf Opcodes
     OPCODE_IMMEDIATE,
     OPCODE_REGISTER,

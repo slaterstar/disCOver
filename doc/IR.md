@@ -35,9 +35,9 @@ HOWEVER, the first operand MUST be a register, and the second operand (if applic
 | EQ | Returns 1 if both operands have equivalent value else 0 | t2 = EQ(t1, t0)
 | GT | Returns 1 if the first operand is greater than the second operand else 0| t2 = GT(t1, t0)
 | GTE | Returns 1 if the first operand is greater than or equal to the second operand | t2 = GTE(t1, t0)
-| JUMP | Continue execution starting from the specified label. | JUMP(LABEL)
+| JUMP | Continue execution starting from the specified label or register address. | JUMP(LABEL)
 | BRANCH | If the first operand (register) is 1, jump to the 3rd operand's label else jump to the 2nd operand. | BRANCH(t0, TRUE_LABEL, FALSE_LABEL)
-| HALT | Returns no value, halts execution of program. | |
+| HALT | Returns no value, halts execution of program. | HALT |
 
 # MISC
 | Operations | Description | Example |
