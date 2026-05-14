@@ -8,67 +8,22 @@
 #include "../datastructures/ast.h"
 
 
-typedef struct {
-    OperandType type;
-    union {
-        int reg;
-        int imm;
-        int mem;
-        int label;
-    } value;
-} Operand;
 
 typedef struct {
-    IROpcode opcode;
-    union {
-        struct {
-            int dest_reg;
-            int src_reg; // Register only
-        } load;
-        struct {
-            int addr_reg;
-            int data_reg;
-        } store;
-        struct {
-            int dest_reg;
-            int src1_reg;
-            Operand src2;
-        } alu;
-        struct{
-            int dest_reg;
-            int src1_reg;
-            Operand src2;
-        } comp;
-        struct {
-            int dest_reg;
-            int const_val;
-        } assign;
-        struct {
-            Operand label; // intlabel or a register for address
-        } jump;
-        struct {
-            int cond_reg;
-            Operand true_val; // intlabel or a register for address
-            Operand false_val; // intlabel or a register for address
-        } branch;
-        struct {
-            int label;
-        } label;
-        struct {
-            int dest_reg;
-            int *src_regs;
-            int num_srcs;
-        } phi;
-    };
-    uint32_t mem_addr; // Address of the memory region being lifted; Only the start of a block will have a positive address.
-} IRInstruction;
+    uint32_t address;  // The actual memory address (Key)
+    ast_node_t* node;  // The AST node (Value)
+} StateMapEntry;
 
 typedef struct {
-    ast_node_t* root;
-    // DynamicArray* instructions;
-    // DynamicArray* basic_blocks;
-    int reg_count;
-    int label_count;
+    // Data Flow
+    DynamicArray* state_map;  // Tracks static addresses like [#100]
+    // Dynamic array of StateMapEntrys
+
+    // Side Effects
+    DynamicArray* side_effects; // A list to push STORE or SYSCALL nodes into, flags anything that can't be statically resolved
+
+    // Control Flow
+    ast_node_t* terminator;   // Replaces 'root'. Holds the final BRANCH/JUMP/HALT
 } IRContext;
 
 typedef struct {
@@ -101,13 +56,12 @@ int label_cmp(const void* a, const void* b);
 int block_cmp(const void* a, const void* b);
 
 void create_ir_context(IRContext* ctx);
-void add_instruction(IRContext* ctx, IRInstruction instr);
-void print_ir(IRContext* ctx);
-IRInstruction get_instruction(IRContext* ctx, int index);
-void* insert_ir_instruction(IRContext* ctx, int index, IRInstruction instr);
+
+
+
 void free_ir_context(IRContext* ctx);
 
-int new_reg(IRContext* ctx);
-int new_label(IRContext* ctx, uint32_t value, LabelType type, LabelPair* out_label);
+ast_node_t* get_current_state(IRContext* ctx, uint32_t memory_addr);
+void set_current_state(IRContext* ctx, uint32_t memory_addr, ast_node_t* node);
 
 #endif // IR_H

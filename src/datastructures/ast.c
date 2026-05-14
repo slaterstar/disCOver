@@ -4,17 +4,19 @@
 // make sure its zero initialized
 ast_node_t* ast_table[TABLE_SIZE] = {0};
 
-uint32_t hash_node(IROpcode op, ast_node_t* lhs, ast_node_t* rhs, int imm){
+uint32_t hash_node(IROpcode op, ast_node_t* c1, ast_node_t* c2, ast_node_t* c3, int imm){
     struct {
         uint32_t op;
-        uintptr_t l;
-        uintptr_t r;
+        uintptr_t c1;
+        uintptr_t c2;
+        uintptr_t c3;
         uint64_t val;
     } data;
 
     data.op = (uint32_t)op;
-    data.l  = (uintptr_t)lhs;
-    data.r  = (uintptr_t)rhs;
+    data.c1 = (uintptr_t)c1;
+    data.c2 = (uintptr_t)c2;
+    data.c3 = (uintptr_t)c3;
     data.val = imm;
 
     uint32_t hash_out;
@@ -26,16 +28,16 @@ uint32_t hash_node(IROpcode op, ast_node_t* lhs, ast_node_t* rhs, int imm){
 }
 
 // Constructor for ast_node
-ast_node_t* make_binop(IROpcode op, ast_node_t* lhs, ast_node_t* rhs, int imm){
+ast_node_t* make_node(IROpcode op, ast_node_t* c1, ast_node_t* c2, ast_node_t* c3, int imm){
     // hash pointers of children
-    uint32_t hash = hash_node(op, lhs, rhs, imm);
+    uint32_t hash = hash_node(op, c1, c2, c3, imm);
     int bucket = hash % TABLE_SIZE;
 
     // Lookup specific operation with specific children
     ast_node_t* node = ast_table[bucket];
     while(node){
         // check for exact match
-        if (node->data.bin.left_child == lhs && node->data.bin.right_child == rhs && node->opcode == op && node->data.value == imm) {
+        if (node->c1 == c1 && node->c2 == c2 && node->c3 == c3 && node->opcode == op && node->value == imm) {
             return node;
         }
         // Traverse the bucket for collisions
@@ -46,9 +48,10 @@ ast_node_t* make_binop(IROpcode op, ast_node_t* lhs, ast_node_t* rhs, int imm){
     node = (ast_node_t*)malloc(sizeof(ast_node_t));
     node->opcode = op;
     node->hash = hash;
-    node->data.bin.left_child = lhs;
-    node->data.bin.right_child = rhs;
-    node->data.value = imm;
+    node->c1 = c1;
+    node->c2 = c2;
+    node->c3 = c3;
+    node->value = imm;
     // Insert at head of bucket
     node->next = ast_table[bucket];
     ast_table[bucket] = node;
