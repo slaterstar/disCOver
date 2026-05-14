@@ -29,7 +29,8 @@ typedef enum  {
 typedef enum {
     OP_REGISTER,
     OP_IMMEDIATE,
-    OP_MEMORY_ADDR
+    OP_MEMORY_ADDR,
+    OP_LABEL,
 } OperandType;
 
 #endif // ENUMS_H
