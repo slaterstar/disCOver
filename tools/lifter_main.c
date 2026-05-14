@@ -20,75 +20,6 @@ const LifterOutput output_binary[] = {
     {18, &lift_jumpnz10}, {19, &lift_jumpnz11},
 };
 
-void print_ir_instr(IRInstruction *ir_instr, FILE *out_file){
-    if(ir_instr->opcode == OPCODE_LABEL) {
-        fprintf(out_file, "label %d\n", ir_instr->label.label);
-        return;
-    }
-    if(ir_instr->mem_addr != -1){
-        fprintf(out_file, "0x%08X: ", ir_instr->mem_addr);
-    }
-    else{
-        fprintf(out_file, "            ");
-    }
-    switch (ir_instr->opcode) {
-        case OPCODE_ADD:
-            fprintf(out_file, "add r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
-            break;
-        case OPCODE_SUB:
-            fprintf(out_file, "sub r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
-            break;
-        case OPCODE_MUL:
-            fprintf(out_file, "mul r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
-            break;
-        case OPCODE_DIV:
-            fprintf(out_file, "div r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
-            break;
-        case OPCODE_NOT:
-            fprintf(out_file, "not r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg);
-            break;
-        case OPCODE_AND:
-            fprintf(out_file, "and r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
-            break;
-        case OPCODE_OR:
-            fprintf(out_file, "or r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
-            break;
-        case OPCODE_ASR:
-            fprintf(out_file, "asr r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
-            break;
-        case OPCODE_LSL:
-            fprintf(out_file, "lsl r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
-            break;
-        case OPCODE_LSR:
-            fprintf(out_file, "lsr r%d, r%d, r%d\n", ir_instr->alu.dest_reg, ir_instr->alu.src1_reg, ir_instr->alu.src2_reg);
-            break;
-        case OPCODE_LOAD:
-            fprintf(out_file, "load r%d, [r%d]\n", ir_instr->load.dest_reg, ir_instr->load.src);
-            break;
-        case OPCODE_STORE:
-            fprintf(out_file, "store [r%d], r%d\n", ir_instr->store.dest_addr.value.reg, ir_instr->store.src_reg.value.reg);
-            break;
-        case OPCODE_ASSIGN:
-            fprintf(out_file, "assign r%d, %d\n", ir_instr->assign.dest_reg, ir_instr->assign.const_val);
-            break;
-        case OPCODE_LABEL:
-            fprintf(out_file, "label l%d\n", ir_instr->label.label);
-            break;
-        case OPCODE_JUMP:
-            fprintf(out_file, "jump l%d\n", ir_instr->jump.label);
-            break;
-        case OPCODE_BRANCH:
-            fprintf(out_file, "branch r%d, l%d, l%d\n", ir_instr->branch.cond_reg, ir_instr->branch.true_label, ir_instr->branch.false_label);
-            break;
-        case OPCODE_HALT:
-            fprintf(out_file, "halt\n");
-            break;
-        default:
-            fprintf(out_file, "unknown_opcode\n");
-            break;
-    }
-}
-
 int main(int argc, char *argv[]){
     char* infile_name = NULL;
 
@@ -135,58 +66,9 @@ int main(int argc, char *argv[]){
         }
     }
 
-    insert_labels_into_ir(ctx, labels);
     // Print IR instructions
 
-    // Begin on basic block population
-    DynamicArray* basic_blocks = malloc(sizeof(DynamicArray));
-    init_dynamic_array(basic_blocks, 40, sizeof(BasicBlock));
-    size_t start = 0;
-    size_t end = 0;
-    for(int i = 0; i < ctx->instructions->size; i++) {
-        IRInstruction instr = ((IRInstruction*)ctx->instructions->data)[i];
-        if(instr.opcode == OPCODE_LABEL) {
-            // Labels should signify start of a block.
-            end = i - 1;
-            BasicBlock* bb = malloc(sizeof(BasicBlock));
-            bb->start = start;
-            bb->end = end;
-            push_back(basic_blocks, bb);
-            start = i;
-        }
-        else if ( instr.opcode == OPCODE_JUMP || instr.opcode == OPCODE_BRANCH){
-            // We want branches to be the end of a block
-            end = i;
-            BasicBlock* bb = malloc(sizeof(BasicBlock));
-            bb->start = start;
-            bb->end = end;
-            push_back(basic_blocks, bb);
-            start = i+1;
-        }
-        else if (instr.opcode == OPCODE_HALT) {
-            end = i;
-            BasicBlock* bb = malloc(sizeof(BasicBlock));
-            bb->start = start;
-            bb->end = end;
-            push_back(basic_blocks, bb);
-            if( i < ctx->instructions->size - 1) {
-                start = i + 1;
-            }
-        }
-    }
-    for(int i = 0; i < basic_blocks->size; i++) {
-        BasicBlock* bb = get(basic_blocks, i);
-        printf("Basic block %d: start=%zu, end=%zu\n", i, bb->start, bb->end);
-        printf("Instruction at start: ");
-        print_ir_instr(&((IRInstruction*)ctx->instructions->data)[bb->start], out_file);
-        printf("Instruction at end  : ");
-        print_ir_instr(&((IRInstruction*)ctx->instructions->data)[bb->end], out_file);
-    }
 
-    for(int i = 0; i < ctx->instructions->size; i++) {
-        IRInstruction instr = ((IRInstruction*)ctx->instructions->data)[i];
-        print_ir_instr(&instr, out_file);
-    }
     // Begin on Lemerre's SSA,
 
 
@@ -195,51 +77,3 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-void insert_labels_into_ir(IRContext* ctx, DynamicArray* labels) {
-    // Insert at end so we don't need to shift indices as we iterate.
-    qsort(labels->data, labels->size, sizeof(LabelPair), label_cmp);
-
-    for(int i = 0; i < labels->size; i++) {
-        LabelPair* lp = &((LabelPair*)labels->data)[i];
-
-        if (lp->type == MEM) {
-            int raw_index = find_instr_index_by_addr(ctx, lp->value.memory_addr);
-
-            if (raw_index != -1) {
-                IRInstruction label_instr = {
-                    .opcode = OPCODE_LABEL,
-                    .label = { .label = lp->label_index },
-                    .mem_addr = lp->value.memory_addr
-                };
-
-                insert_ir_instruction(ctx, raw_index, label_instr);
-            }
-        }
-    }
-}
-
-int find_instr_index_by_addr(IRContext* ctx, uint32_t addr) {
-    int best_index = -1;
-    uint32_t best_addr = 0;
-
-    for (int i = 0; i < ctx->instructions->size; i++) {
-        IRInstruction* current = (IRInstruction*)get(ctx->instructions, i);
-
-        // Skip internal IR instructions that don't have a real physical address
-        if (current->mem_addr == (uint32_t)-1) continue;
-
-        // Exact match found
-        if (current->mem_addr == addr) {
-            return i;
-        }
-
-        // Track the closest instruction that started BEFORE the target address
-        if (current->mem_addr < addr && (best_index == -1 || current->mem_addr > best_addr)) {
-            best_index = i;
-            best_addr = current->mem_addr;
-        }
-    }
-
-    // This will return the index of the instruction "containing" the label
-    return best_index;
-}
