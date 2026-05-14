@@ -35,6 +35,8 @@ Lookup table is used for lifting, each overscore instruction variant has its own
 ### Lemerre SSA
 Interesting thing that may occur is being able to refactor itself when the code output changes. Not quite sure about it but I want to try this new technique just to learn.
 
+Need to rewrite lifter, rather than lift to flat IR, use AST nodes instead.
+
 # In-progress
 - Create IR for all instructions
 - Implement labels
