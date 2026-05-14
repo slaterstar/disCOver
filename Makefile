@@ -10,7 +10,10 @@ LIFTER_SRCS = tools/lifter_main.c \
               src/lifter/lift.c \
               src/lifter/ir.c \
               src/datastructures/dynamicarray.c \
-              src/disassembler/disassemble.c
+              src/disassembler/disassemble.c \
+              src/lifter/ir_builder.c \
+              src/datastructures/ast.c \
+              src/datastructures/hash.c
 
 DISCOVER_SRCS = tools/discover_main.c \
                 src/disassembler/disassemble.c \
