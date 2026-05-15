@@ -40,12 +40,7 @@ int main(int argc, char *argv[]){
         return 1;
     }
 
-    ctx = malloc(sizeof(IRContext));
-    create_ir_context(ctx);
 
-    // Initialize labels array to allow for second pass
-    labels = malloc(sizeof(DynamicArray));
-    init_dynamic_array(labels, 40, sizeof(LabelPair));
 
     DynamicArray* instructions = malloc(sizeof(DynamicArray));
     init_dynamic_array(instructions, 40, sizeof(DecodedInstr));
@@ -69,22 +64,27 @@ int main(int argc, char *argv[]){
     // Create control flow graph
     DynamicArray* basic_blocks = build_cfg(ctx, instructions);
 
+    // Will keep our abstract stores
+    DynamicArray* work_list = malloc(sizeof(DynamicArray));
+    init_dynamic_array(work_list, 40, sizeof(size_t));
+
+
     // Print IR instructions
     // for(int i = 0; i < ctx->state_map->size; i++) {
     //     printf("StateMapEntry %d: address=%u\n", i, ((StateMapEntry*)ctx->state_map->data)[i].address);
     //     print_node(((StateMapEntry*)ctx->state_map->data)[i].node, 0);
     // }
 
-    for(int i = 0; i < basic_blocks->size; i++) {
-        BasicBlock block = ((BasicBlock*)basic_blocks->data)[i];
-        printf("BasicBlock %d @ 0x%x: start=%zu end=%zu\n", i, block.start_addr, block.start_idx, block.end_idx);
-    }
+    // for(int i = 0; i < basic_blocks->size; i++) {
+    //     BasicBlock block = ((BasicBlock*)basic_blocks->data)[i];
+    //     printf("BasicBlock %d @ 0x%x: start=%zu end=%zu\n", i, block.start_addr, block.start_idx, block.end_idx);
+    // }
 
     // Begin on Lemerre's SSA,
 
 
-    free_ir_context(ctx);
-    free_dynamic_array(labels);
+    // free_ir_context(ctx);
+    free_dynamic_array(basic_blocks);
     return 0;
 }
 

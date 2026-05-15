@@ -10,7 +10,6 @@
 #include "../../include/datastructures/ast.h"
 #include <stdint.h>
 
-extern IRContext* ctx;
 extern DynamicArray* labels;
 
 /* =========================================

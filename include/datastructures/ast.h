@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "../lifter/enums.h"
 #include "hash.h"
+#include "dynamicarray.h"
 // Hash-Consed AST Node
 // For our hash we use a bucket-based approach, hence why we have a `next` pointer
 // Making it a ternary is necessary for a branch operator
@@ -17,7 +18,7 @@ typedef struct ast_node {
     struct ast_node* c2; // Used for: Right Child OR True Target
     struct ast_node* c3; // Used for: False Target
     uint64_t value;      // Used for: Immediates/Registers
-
+    DynamicArray* phi_operands; // Only used if opcode is PHI
     struct ast_node* next; // Hash table bucket chain
 } ast_node_t;
 

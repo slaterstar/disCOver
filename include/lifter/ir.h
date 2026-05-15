@@ -14,17 +14,17 @@ typedef struct {
     ast_node_t* node;  // The AST node (Value)
 } StateMapEntry;
 
-typedef struct {
-    // Data Flow
-    DynamicArray* state_map;  // Tracks static addresses like [#100]
-    // Dynamic array of StateMapEntrys
+// typedef struct {
+//     // Data Flow
+//     DynamicArray* state_map;  // Tracks static addresses like [#100]
+//     // Dynamic array of StateMapEntrys
 
-    // Side Effects
-    DynamicArray* side_effects; // A list to push STORE or SYSCALL nodes into, flags anything that can't be statically resolved
+//     // Side Effects
+//     DynamicArray* side_effects; // A list to push STORE or SYSCALL nodes into, flags anything that can't be statically resolved
 
-    // Control Flow
-    ast_node_t* terminator;   // Replaces 'root'. Holds the final BRANCH/JUMP/HALT
-} IRContext;
+//     // Control Flow
+//     ast_node_t* terminator;   // Replaces 'root'. Holds the final BRANCH/JUMP/HALT
+// } IRContext;
 
 typedef struct BasicBlock {
     size_t start_idx;    // Index in the 'instructions' array
@@ -65,15 +65,7 @@ int label_cmp(const void* a, const void* b);
 
 int block_cmp(const void* a, const void* b);
 
-void create_ir_context(IRContext* ctx);
 
-
-
-void free_ir_context(IRContext* ctx);
-
-ast_node_t* get_current_state(IRContext* ctx, uint32_t memory_addr);
-void set_current_state(IRContext* ctx, uint32_t memory_addr, ast_node_t* node);
-
-DynamicArray* build_cfg(IRContext* ctx, DynamicArray* disassembly);
+DynamicArray* build_cfg(DynamicArray* disassembly);
 
 #endif // IR_H
