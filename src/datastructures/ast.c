@@ -28,6 +28,56 @@ uint32_t hash_node(IROpcode op, ast_node_t* c1, ast_node_t* c2, ast_node_t* c3, 
     return hash_out;
 }
 
+uint32_t hash_phi_node(IROpcode op, uint32_t block_start_address, uint32_t memory_address){
+    struct {
+        uint32_t op;
+        uint32_t block_start_address;
+        uint32_t memory_address;
+    } data;
+
+    data.op = (uint32_t)op;
+    data.block_start_address = block_start_address;
+    data.memory_address = memory_address;
+
+    uint32_t hash_out;
+    uint32_t seed = 0xADCDBADE; // Constant seed
+
+    MurmurHash3_x86_32(&data, sizeof(data), seed, &hash_out);
+
+    return hash_out;
+}
+
+// Constructor for ast_phi_node
+ast_node_t* make_phi_node(IROpcode op, DynamicArray* phi_operands, uint32_t block_start_address, uint32_t memory_address){
+    uint32_t hash = hash_phi_node(op, block_start_address, memory_address);
+    int bucket = hash % TABLE_SIZE;
+
+
+    ast_node_t* node = ast_table[bucket];
+    while(node){
+        // check for exact match
+        if (node->phi_operands == phi_operands && node->phi_block_addr == block_start_address && node->phi_mem_addr == memory_address && node->opcode == op) {
+            return node;
+        }
+        // Traverse the bucket for collisions
+        node = node->next;
+    }
+
+    node = (ast_node_t*)malloc(sizeof(ast_node_t));
+    node->opcode = op;
+    node->hash = hash;
+    node->c1 = NULL;
+    node->c2 = NULL;
+    node->c3 = NULL;
+    node->value = 0;
+    node->phi_operands = phi_operands;
+    node->phi_block_addr = block_start_address;
+    node->phi_mem_addr = memory_address;
+    node->next = NULL;
+
+    return node;
+}
+
 // Constructor for ast_node
 ast_node_t* make_node(IROpcode op, ast_node_t* c1, ast_node_t* c2, ast_node_t* c3, int imm){
     // hash pointers of children
