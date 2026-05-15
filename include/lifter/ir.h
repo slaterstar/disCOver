@@ -26,9 +26,19 @@ typedef struct {
     ast_node_t* terminator;   // Replaces 'root'. Holds the final BRANCH/JUMP/HALT
 } IRContext;
 
-typedef struct {
-    size_t start; // Index of first instruction in basic block.
-    size_t end; // Index of last instruction in basic block.
+typedef struct BasicBlock {
+    size_t start_idx;    // Index in the 'instructions' array
+    size_t end_idx;      // Index of the terminator instruction
+    uint32_t start_addr; // The actual Overscore memory address of the first instruction
+
+    DynamicArray* predecessors; // Array of BasicBlock*
+    DynamicArray* successors;   // Array of BasicBlock*
+
+    // Lemerre's Abstract Stores (Replacing the global ctx->state_map)
+    DynamicArray* entry_store;  // Array of StateMapEntry
+    DynamicArray* exit_store;   // Array of StateMapEntry
+
+    bool sealed; // Used later to check if all predecessors are known
 } BasicBlock;
 
 

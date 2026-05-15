@@ -45,3 +45,8 @@ void set_current_state(IRContext* ctx, uint32_t memory_addr, ast_node_t* node){
     StateMapEntry entry = {.address = memory_addr, .node = node};
     push_back(ctx->state_map, &entry);
 }
+
+void build_cfg(IRContext* ctx) {
+    // End basic block when:
+    //
+}
