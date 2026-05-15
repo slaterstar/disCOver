@@ -74,4 +74,6 @@ void free_ir_context(IRContext* ctx);
 ast_node_t* get_current_state(IRContext* ctx, uint32_t memory_addr);
 void set_current_state(IRContext* ctx, uint32_t memory_addr, ast_node_t* node);
 
+DynamicArray* build_cfg(IRContext* ctx, DynamicArray* disassembly);
+
 #endif // IR_H

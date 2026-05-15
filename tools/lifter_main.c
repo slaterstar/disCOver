@@ -66,12 +66,18 @@ int main(int argc, char *argv[]){
         }
     }
 
-
+    // Create control flow graph
+    DynamicArray* basic_blocks = build_cfg(ctx, instructions);
 
     // Print IR instructions
-    for(int i = 0; i < ctx->state_map->size; i++) {
-        printf("StateMapEntry %d: address=%u\n", i, ((StateMapEntry*)ctx->state_map->data)[i].address);
-        print_node(((StateMapEntry*)ctx->state_map->data)[i].node, 0);
+    // for(int i = 0; i < ctx->state_map->size; i++) {
+    //     printf("StateMapEntry %d: address=%u\n", i, ((StateMapEntry*)ctx->state_map->data)[i].address);
+    //     print_node(((StateMapEntry*)ctx->state_map->data)[i].node, 0);
+    // }
+
+    for(int i = 0; i < basic_blocks->size; i++) {
+        BasicBlock block = ((BasicBlock*)basic_blocks->data)[i];
+        printf("BasicBlock %d @ 0x%x: start=%zu end=%zu\n", i, block.start_addr, block.start_idx, block.end_idx);
     }
 
     // Begin on Lemerre's SSA,
