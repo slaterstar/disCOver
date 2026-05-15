@@ -1,5 +1,6 @@
 #include "../../include/datastructures/ast.h"
 #include <stdlib.h>
+#include <stdio.h>
 #define TABLE_SIZE 1024
 // make sure its zero initialized
 ast_node_t* ast_table[TABLE_SIZE] = {0};
@@ -57,4 +58,25 @@ ast_node_t* make_node(IROpcode op, ast_node_t* c1, ast_node_t* c2, ast_node_t* c
     ast_table[bucket] = node;
 
     return node;
+}
+
+void print_node(ast_node_t* node, int depth){
+    if (node == NULL) return;
+    printf("%s", opcode_print[node->opcode].name);
+    if(node->opcode == OPCODE_IMMEDIATE || node->opcode == OPCODE_REGISTER || node->opcode == OPCODE_MEMORY_ADDRESS) {
+        printf(", %llu", node->value);
+    }
+    printf("\n");
+    if(node->c1) {
+        for(int i = 0; i < depth; i++) printf("  ");
+        print_node(node->c1, depth + 1);
+    }
+    if(node->c2) {
+        for(int i = 0; i < depth; i++) printf("  ");
+        print_node(node->c2, depth + 1);
+    }
+    if(node->c3) {
+        for(int i = 0; i < depth; i++) printf("  ");
+        print_node(node->c3, depth + 1);
+    }
 }

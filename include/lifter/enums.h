@@ -33,4 +33,39 @@ typedef enum  {
 } IROpcode;
 
 
+typedef struct {
+    IROpcode opcode;
+    const char *name;
+} OpcodePrint;
+
+const static OpcodePrint opcode_print[] = {
+    {OPCODE_ADD, "ADD"},
+    {OPCODE_SUB, "SUB"},
+    {OPCODE_MUL, "MUL"},
+    {OPCODE_DIV, "DIV"},
+    {OPCODE_LT, "LT"},
+    {OPCODE_LTE, "LTE"},
+    {OPCODE_GT, "GT"},
+    {OPCODE_GTE, "GTE"},
+    {OPCODE_EQ, "EQ"},
+    {OPCODE_NOT, "NOT"},
+    {OPCODE_AND, "AND"},
+    {OPCODE_OR, "OR"},
+    {OPCODE_XOR, "XOR"},
+    {OPCODE_ASR, "ASR"},
+    {OPCODE_LSL, "LSL"},
+    {OPCODE_LSR, "LSR"},
+    {OPCODE_LOAD, "LOAD"},
+    {OPCODE_STORE, "STORE"},
+    {OPCODE_ASSIGN, "ASSIGN"},
+    {OPCODE_LABEL, "LABEL"},
+    {OPCODE_JUMP, "JUMP"},
+    {OPCODE_BRANCH, "BRANCH"},
+    {OPCODE_HALT, "HALT"},
+    {OPCODE_PHI, "PHI"},
+    {OPCODE_IMMEDIATE, "IMMEDIATE"},
+    {OPCODE_REGISTER, "REGISTER"},
+    {OPCODE_MEMORY_ADDRESS, "MEMORY_ADDRESS"},
+};
+
 #endif // ENUMS_H

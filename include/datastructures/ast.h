@@ -22,4 +22,5 @@ typedef struct ast_node {
 } ast_node_t;
 
 ast_node_t* make_node(IROpcode op, ast_node_t* c1, ast_node_t* c2, ast_node_t* c3, int imm);
+void print_node(ast_node_t* node, int depth);
 #endif // AST_H
