@@ -66,8 +66,11 @@ int main(int argc, char *argv[]){
         }
     }
 
+
+
     // Print IR instructions
     for(int i = 0; i < ctx->state_map->size; i++) {
+        printf("StateMapEntry %d: address=%u\n", i, ((StateMapEntry*)ctx->state_map->data)[i].address);
         print_node(((StateMapEntry*)ctx->state_map->data)[i].node, 0);
     }
 
